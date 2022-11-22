@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fd8d8f35e42b84cbf2c0069b578d87, type: 3}
+  m_Name: TaigaData
+  m_EditorClassIdentifier: 
+  biomeName: Taiga
+  biomeId: 13
+  groundColor: {r: 0.20220721, g: 0.6037736, b: 0.29832235, a: 0}
+  height:
+    min: 0.4
+    max: 0.66
+  temperature:
+    min: 0.25
+    max: 0.45
+  humidity:
+    min: 0.5
+    max: 1
+  biomePriority: 60
+  allowedVegitation:
+  - {fileID: 11400000, guid: 0694f5f0b1e03a3459965d49e2782961, type: 2}
+  - {fileID: 11400000, guid: cd20e0c8517a47c4dba7e789da1ac5c3, type: 2}
+  - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
+  - {fileID: 11400000, guid: ce55cbd42a570cf4d9127dc5a4f37929, type: 2}
+  vegitationDensity: 240

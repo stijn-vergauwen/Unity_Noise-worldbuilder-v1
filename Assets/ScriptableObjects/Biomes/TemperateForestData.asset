@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fd8d8f35e42b84cbf2c0069b578d87, type: 3}
+  m_Name: TemperateForestData
+  m_EditorClassIdentifier: 
+  biomeName: Temperate forest
+  biomeId: 14
+  groundColor: {r: 0.11526056, g: 0.6792453, b: 0.086507656, a: 0}
+  height:
+    min: 0.4
+    max: 0.64
+  temperature:
+    min: 0.4
+    max: 0.7
+  humidity:
+    min: 0.5
+    max: 1
+  biomePriority: 60
+  allowedVegitation:
+  - {fileID: 11400000, guid: 0694f5f0b1e03a3459965d49e2782961, type: 2}
+  - {fileID: 11400000, guid: fc0107af256b71a4183a22b197d39e5a, type: 2}
+  - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
+  - {fileID: 11400000, guid: 099db1d15fadd104c9d6f6f665b7e1b0, type: 2}
+  - {fileID: 11400000, guid: ce55cbd42a570cf4d9127dc5a4f37929, type: 2}
+  - {fileID: 11400000, guid: 85625f8643544504e9650f537efb1aae, type: 2}
+  vegitationDensity: 260
