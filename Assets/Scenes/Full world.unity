@@ -610,7 +610,8 @@ MonoBehaviour:
   worldBuilder: {fileID: 654255226}
   vegitationPlacer: {fileID: 769866391}
   mapToDraw: 1
-  endlessTerrain: 0
+  endlessTerrain: 1
+  randomizeNoiseSeeds: 1
   playerTransform: {fileID: 1481941070}
   playerMoveThreshold: 10
   chunkMaxTerrainDistance: 300
