@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7172626811186571881}
   - component: {fileID: 6299469671117969418}
   - component: {fileID: 4072488467316657478}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: meshHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1097587125688654293}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PropsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,6 +11,7 @@ public class ChunksManager : MonoBehaviour
   [SerializeField] VegitationPlacer vegitationPlacer;
   [SerializeField] MapToDraw mapToDraw;
   public bool endlessTerrain;
+  [SerializeField] bool randomizeNoiseSeeds = false;
 
   [Header("Player movement based chunk updating")]
   [SerializeField] Transform playerTransform;
@@ -27,6 +28,10 @@ public class ChunksManager : MonoBehaviour
   public Action<MapToDraw> OnDrawMap;
 
   void Start() {
+    if(randomizeNoiseSeeds) {
+      worldBuilder.RandomizeSeedValues();
+    }
+
     if(endlessTerrain) {
       UpdateVisibleChunks();
       StartCoroutine(CheckChunkUpdateRoutine());
