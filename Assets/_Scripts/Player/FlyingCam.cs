@@ -21,8 +21,11 @@ public class FlyingCam : MonoBehaviour
   [SerializeField] float moveSmoothness;
   [SerializeField] float zoomSmoothness;
 
-  Vector3 position;
-  float zoom;
+  [Header("Other")]
+  [SerializeField] LayerMask terrainMask;
+
+  Vector3 targetPosition;
+  float targetZoom;
 
   void Update() {
     UpdateMovement(input.movementInput);
@@ -34,15 +37,25 @@ public class FlyingCam : MonoBehaviour
     }
   }
 
+  // updating values
+
   void UpdateMovement(Vector3 input) {
     // steps for movement
     // 
-    // - change position by input
+    // - change targetPosition by input
     // - raycast down to find terrain height
-    // - set position.y as terrain height
-    // - move anchor to new position using moveSmoothness. taking account of the following:
+    // - set targetPosition.y as terrain height
+    // - move anchor to new targetPosition using moveSmoothness. taking account of the following:
     // - if cam is zoomed in, follow terrain height exactly, so no going underground, when far away, ignore terrain height. interpolate between these.
     // 
+
+    Vector3 newTarget = targetPosition + anchor.rotation * input * moveSpeed;
+    SetTargetPosition(
+      newTarget.x,
+      GetTerrainHeight(newTarget),
+      newTarget.z
+    );
+    
   }
 
   void UpdateRotation(Vector2 input) {
@@ -63,7 +76,26 @@ public class FlyingCam : MonoBehaviour
     // 
   }
 
+  void MoveAnchor(Vector3 target) {
+    anchor.position = targetPosition;
+  }
+
+  void SetTargetPosition(float x, float y, float z) {
+    targetPosition = new Vector3(x, y, z);
+  }
+
+  float GetTerrainHeight(Vector3 position) {
+    position.y = 50; // height could be adjustable, just needs enough clearance above terrain
+    float terrainHeight = 0;
+
+    RaycastHit hit;
+    if(Physics.Raycast(position, Vector3.down, out hit, 50, terrainMask)) {
+      terrainHeight = hit.point.y;
+    }
+    return terrainHeight;
+  }
+
   Vector3 GetFlatPosition() {
-    return new Vector3(position.x, defaultHeight, position.z);
+    return new Vector3(targetPosition.x, defaultHeight, targetPosition.z);
   }
 }
