@@ -9,12 +9,12 @@ public class CharacterMovement : MonoBehaviour
   [SerializeField] CharacterController controller;
 
   [Header("Movement settings")]
-  [SerializeField, Range(100, 800)] int walkStrength = 400;
+  [SerializeField, Range(100, 1000)] int walkStrength = 400;
   [SerializeField, Range(1, 10)] float walkSpeed = 2;
-  [SerializeField, Range(100, 800)] int sprintStrength = 600;
+  [SerializeField, Range(100, 1000)] int sprintStrength = 600;
   [SerializeField, Range(1, 10)] float sprintSpeed = 4;
-  [SerializeField, Range(0, 600)] int counteractStrength = 200;
-  [SerializeField, Range(100, 400)] int jumpStrength = 200;
+  [SerializeField, Range(0, 1000)] int counteractStrength = 200;
+  [SerializeField, Range(100, 600)] int jumpStrength = 200;
 
   [Header("turn settings")]
   [SerializeField] float turnSpeed = 1;
@@ -61,6 +61,8 @@ public class CharacterMovement : MonoBehaviour
     controller.isGrounded = isGroundedCheck;
 
     UpdateCurrentFloor(isGroundedCheck);
+
+    controller.RaisePositionEvent();
   }
 
   void UpdateRotation() {
