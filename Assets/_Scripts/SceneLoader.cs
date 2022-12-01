@@ -18,7 +18,7 @@ public class SceneLoader : MonoBehaviour
   }
 
   void Start() {
-    SetActiveScene();
+    SetStartScene();
   }
 
   void LoadScene(SceneName sceneToLoad) {
@@ -53,14 +53,24 @@ public class SceneLoader : MonoBehaviour
     SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
   }
 
+  void SetStartScene() {
+    SceneName startScene;
+    if(!CheckLoadedScene(out startScene)) {
+      SceneManager.LoadScene("Main menu", LoadSceneMode.Additive);
+      StartCoroutine(ActivateSceneAfterDelay("Main menu"));
 
+    } else {
+      activeScene = startScene;
+    }
+  }
 
-  void SetActiveScene() {
-    activeScene = (
-      SceneManager.GetSceneByName("Main menu").IsValid() ?
-      SceneName.MainMenu :
-      SceneName.Game
+  bool CheckLoadedScene(out SceneName loadedScene) {
+    loadedScene = (
+      SceneManager.GetSceneByName("Full world").IsValid() ?
+      SceneName.Game :
+      SceneName.MainMenu
     );
+    return SceneManager.sceneCount > 1;
   }
 
 }

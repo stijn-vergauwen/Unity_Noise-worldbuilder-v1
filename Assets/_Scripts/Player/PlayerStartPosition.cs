@@ -8,7 +8,7 @@ public class PlayerStartPosition : MonoBehaviour
   [SerializeField] LayerMask terrainMask;
 
   void Start() {
-    Invoke("SetStartPosition", .1f);
+    Invoke("SetStartPosition", .01f);
   }
 
   void SetStartPosition() {
