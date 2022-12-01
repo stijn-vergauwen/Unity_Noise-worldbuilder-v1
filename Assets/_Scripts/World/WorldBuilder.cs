@@ -32,6 +32,12 @@ public class WorldBuilder : MonoBehaviour
     }
   }
 
+  public void RandomizeSeedValues() {
+    worldSettings.heightMap.seed = Random.Range(1, 1000);
+    worldSettings.temperatureMap.seed = Random.Range(1, 1000);
+    worldSettings.humidityMap.seed = Random.Range(1, 1000);
+  }
+
   void GenerateWorld() {
     // generate all chunks, the -size + 1 is to go the same amount in positive & negative directions
     for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
@@ -168,11 +174,11 @@ public class WorldBuilder : MonoBehaviour
 
 
   // delete and rebuild world when R key is pressed
-  void Update() {
-    if(Input.GetKeyDown(KeyCode.R)) {
-      ClearWorld();
-      GenerateWorld();
-    }
-  }
+  // void Update() {
+  //   if(Input.GetKeyDown(KeyCode.R)) {
+  //     ClearWorld();
+  //     GenerateWorld();
+  //   }
+  // }
 
 }

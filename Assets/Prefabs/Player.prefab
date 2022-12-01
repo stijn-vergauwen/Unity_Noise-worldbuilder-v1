@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8167679350277007710}
   - component: {fileID: 8080971630426410902}
   - component: {fileID: 3862068475870054949}
+  - component: {fileID: 6033491042634409133}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -61,6 +62,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementInput: {x: 0, y: 0, z: 0}
   turnInput: {x: 0, y: 0}
+--- !u!114 &6033491042634409133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681523526903605400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90df99a618ef50478b021d49063a8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 8167679350277007710}
+  terrainMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &2843103048238027414
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +252,9 @@ MonoBehaviour:
   defaultHeight: 0
   moveSmoothness: 0
   zoomSmoothness: 0
+  terrainMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &7652744328366611346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -243,12 +263,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 8167679350277007710}
     m_Modifications:
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: sprintSpeed
-      value: 10
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: jumpStrength
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: walkStrength
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: sprintStrength
-      value: 800
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: counteractStrength
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 4029747172329170290, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: input
