@@ -168,11 +168,11 @@ public class WorldBuilder : MonoBehaviour
 
 
   // delete and rebuild world when R key is pressed
-  void Update() {
-    if(Input.GetKeyDown(KeyCode.R)) {
-      ClearWorld();
-      GenerateWorld();
-    }
-  }
+  // void Update() {
+  //   if(Input.GetKeyDown(KeyCode.R)) {
+  //     ClearWorld();
+  //     GenerateWorld();
+  //   }
+  // }
 
 }

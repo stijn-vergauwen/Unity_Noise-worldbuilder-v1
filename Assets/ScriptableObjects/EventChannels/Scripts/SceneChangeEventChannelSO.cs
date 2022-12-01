@@ -6,9 +6,9 @@ using System;
 [CreateAssetMenu(menuName = "EventChannels/SceneChangeChannel")]
 public class SceneChangeEventChannelSO : ScriptableObject
 {
-  public Action<Scene> OnSceneChangeRequested;
+  public Action<SceneName> OnSceneChangeRequested;
 
-  public void RaiseEvent(Scene sceneToLoad) {
+  public void RaiseEvent(SceneName sceneToLoad) {
     if(OnSceneChangeRequested != null) {
       OnSceneChangeRequested.Invoke(sceneToLoad);
 
