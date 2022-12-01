@@ -15,7 +15,7 @@ public class OptionsMenu : MonoBehaviour
   }
 
   void Update() {
-    if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.O)) {
+    if(Input.GetKeyDown(KeyCode.Escape)) {
       SetMenuActive(!menuIsActive);
     }
 
