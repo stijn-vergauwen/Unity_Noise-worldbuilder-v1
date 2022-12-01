@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
@@ -23,6 +22,9 @@ public class CharacterController : MonoBehaviour
   IInteractable interactableTarget;
   IGrabbable grabbableTarget;
   Transform targetTransform;
+
+  // events
+  public Action<Vector3> OnPositionUpdate;
 
   void OnEnable() {
     input.OnInteract += OnInteract;
@@ -88,6 +90,10 @@ public class CharacterController : MonoBehaviour
       grabbableTarget.Grab(itemAnchor);
       currentlyGrabbedItem = grabbableTarget;
     }
+  }
+
+  public void RaisePositionEvent() {
+    OnPositionUpdate?.Invoke(rb.position);
   }
 
   // void OnDrawGizmos() {

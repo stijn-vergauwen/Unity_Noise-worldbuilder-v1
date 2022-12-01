@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class SceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+  [SerializeField] SceneChangeEventChannelSO sceneChange;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  void OnEnable() {
+    sceneChange.OnSceneChangeRequested += LoadScene;
+  }
+
+  void OnDisable() {
+    sceneChange.OnSceneChangeRequested -= LoadScene;
+  }
+
+  void LoadScene(Scene sceneToLoad) {
+    print("Load scene:" + sceneToLoad);
+  }
+
 }
+
+public enum Scene {MainMenu, Game, WorldPreview}

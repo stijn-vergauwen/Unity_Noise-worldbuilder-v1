@@ -273,7 +273,7 @@ MonoBehaviour:
   worldBuilder: {fileID: 654255226}
   vegitationPlacer: {fileID: 769866391}
   mapToDraw: 1
-  endlessTerrain: 1
+  endlessTerrain: 0
   playerTransform: {fileID: 1481941070}
   playerMoveThreshold: 10
   chunkMaxTerrainDistance: 300
@@ -583,6 +583,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5456976649808144948, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: groundedMask.m_Bits
+      value: 385
+      objectReference: {fileID: 0}
+    - target: {fileID: 6033491042634409133, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1481941070}
     - target: {fileID: 8167679350277007710, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: m_RootOrder
       value: 3
