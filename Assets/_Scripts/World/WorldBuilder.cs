@@ -13,6 +13,8 @@ public class WorldBuilder : MonoBehaviour
   [Header("Settings")]
   [SerializeField] WorldSettings worldSettings;
 
+  // TODO: move endlessTerrain & mapToDraw back in this class, and move spawnVegitation out of worldSettings.
+  // keep worldsettings only for how things generate, underneath new header put selection options.
   [SerializeField] BuildMode buildMode;
 
   // ChunkSize is correct for coordinates, ChunkMapSize is correct for dataMap & mesh size
