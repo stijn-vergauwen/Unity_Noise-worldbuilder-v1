@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -1574,22 +1575,78 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 967859180586206396, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 1681523526903605400, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: turnSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: zoomSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: defaultHeight
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: zoomLimit.max
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: zoomLimit.min
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: moveSmoothness
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: zoomSmoothness
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532962702666558248, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: terrainMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 5260585864642905009, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5456976649808144948, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: groundedMask.m_Bits
       value: 385
       objectReference: {fileID: 0}
+    - target: {fileID: 5662864702870977056, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9659258
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662864702870977056, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.2588191
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662864702870977056, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6033491042634409133, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1481941070}
+    - target: {fileID: 6330539849205078016, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8167679350277007710, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: m_RootOrder
       value: 3

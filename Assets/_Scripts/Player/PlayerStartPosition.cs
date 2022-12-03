@@ -7,8 +7,12 @@ public class PlayerStartPosition : MonoBehaviour
   [SerializeField] Transform player;
   [SerializeField] LayerMask terrainMask;
 
-  void Start() {
-    Invoke("SetStartPosition", .01f);
+  void OnEnable() {
+    ChunksManager.OnStartareaLoaded += SetStartPosition;
+  }
+
+  void OnDisable() {
+    ChunksManager.OnStartareaLoaded -= SetStartPosition;
   }
 
   void SetStartPosition() {
@@ -22,7 +26,6 @@ public class PlayerStartPosition : MonoBehaviour
     if(Physics.Raycast(Vector3.up * 100, Vector3.down, out hit, 120, terrainMask)) {
       height = hit.point.y;
     }
-    print("ground height found at: " + height);
     return height;
   }
 }

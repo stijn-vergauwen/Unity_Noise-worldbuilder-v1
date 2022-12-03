@@ -27,6 +27,8 @@ public class ChunksManager : MonoBehaviour
 
   public Action<MapToDraw> OnDrawMap;
 
+  public static Action OnStartareaLoaded;
+
   void Start() {
     if(randomizeNoiseSeeds) {
       worldBuilder.RandomizeSeedValues();
@@ -34,6 +36,7 @@ public class ChunksManager : MonoBehaviour
 
     if(endlessTerrain) {
       UpdateVisibleChunks();
+      OnStartareaLoaded?.Invoke();
       StartCoroutine(CheckChunkUpdateRoutine());
     }
   }

@@ -8,15 +8,27 @@ public class PlayerPerspective : MonoBehaviour
 
   Perspective currentPerspective;
 
+  Vector3 playerPosition;
+
   Coroutine perspectiveTransition;
 
   // hold state of player perspective, and switch between with transition on input
 
+  public void SetPlayerPosition(Vector3 newPosition) {
+    playerPosition = newPosition;
+  }
+
+  public Vector3 GetPlayerPosition() {
+    return playerPosition;
+  }
+
+  
 
 
   void SwitchPerspective() {
     // start transition coroutine if none already active
   }
+
 
   // IEnumerator PerspectiveTransitionRoutine(Perspective target) {
 
