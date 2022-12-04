@@ -7,6 +7,7 @@ public class CharacterMovement : MonoBehaviour
   // Basic movement, looking around, jumping, sprinting
 
   [SerializeField] CharacterController controller;
+  [SerializeField] PlayerPerspective playerPerspective;
 
   [Header("Movement settings")]
   [SerializeField, Range(100, 1000)] int walkStrength = 400;
@@ -41,6 +42,19 @@ public class CharacterMovement : MonoBehaviour
     controller.input.OnSprint -= OnSprint;
   }
 
+  public void ActivatePerspective(Vector3 position, Quaternion rotation) {
+    controller.gameObject.SetActive(true);
+    controller.transform.SetPositionAndRotation(position, rotation);
+    
+    controller.rb.velocity = Vector3.zero;
+    pivotAngle = 0;
+    controller.pivot.localRotation = Quaternion.Euler(Vector3.left * pivotAngle);
+  }
+
+  public void DeactivatePerspective() {
+    controller.gameObject.SetActive(false);
+  }
+
   void Update() {
     UpdateRotation();
   }
@@ -62,7 +76,7 @@ public class CharacterMovement : MonoBehaviour
 
     UpdateCurrentFloor(isGroundedCheck);
 
-    controller.RaisePositionEvent();
+    playerPerspective.SetPlayerPositionAndRotation(controller.rb.position, controller.rb.rotation);
   }
 
   void UpdateRotation() {
