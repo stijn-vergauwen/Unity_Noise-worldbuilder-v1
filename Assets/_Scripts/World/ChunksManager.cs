@@ -114,14 +114,11 @@ public class ChunksManager : MonoBehaviour
   }
 
   
-  // does this make any sense? i only want chunks to depend on ChunksManager
   public BiomeSetSO GetBiomeSet() {
     return worldBuilder.BiomeSet;
   }
 
   public void DisplayMap() {
-    print($"display {mapToDraw} map");
-    
     OnDrawMap?.Invoke(mapToDraw);
   }
 

@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4f11f1209a16534da5f647b0113c320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  changeSceneFadeDuration: 0.5
   sceneChange: {fileID: 11400000, guid: 566d2eca35354774bb7cb27bb97ce72a, type: 2}
+  screenFade: {fileID: 11400000, guid: 294e363f315f1a547a9b68144164334e, type: 2}
 --- !u!4 &408072694
 Transform:
   m_ObjectHideFlags: 0
@@ -304,7 +306,6 @@ GameObject:
   - component: {fileID: 1967946209}
   - component: {fileID: 1967946208}
   - component: {fileID: 1967946207}
-  - component: {fileID: 1967946206}
   m_Layer: 5
   m_Name: ScreenTransitions
   m_TagString: Untagged
@@ -312,23 +313,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1967946206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1967946205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1967946207
 MonoBehaviour:
   m_ObjectHideFlags: 0

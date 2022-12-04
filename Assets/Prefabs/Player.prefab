@@ -48,6 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610d8efc6d55b5d469c99681a0748972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstPersonComponent: {fileID: 5456976649808144948}
+  flyingCamComponent: {fileID: 6751388113131362575}
+  startPerspective: 0
+  transitionDuration: 0.5
+  screenFade: {fileID: 11400000, guid: 294e363f315f1a547a9b68144164334e, type: 2}
 --- !u!114 &3862068475870054949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,10 +79,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90df99a618ef50478b021d49063a8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3894266120249889046}
+  player: {fileID: 8080971630426410902}
   terrainMask:
     serializedVersion: 2
     m_Bits: 128
+  offsetAboveGround: 2
 --- !u!1 &2843103048238027414
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3424438542443283010
 Transform:
   m_ObjectHideFlags: 0
@@ -240,18 +246,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 3862068475870054949}
+  playerPerspective: {fileID: 8080971630426410902}
   anchor: {fileID: 3424438542443283010}
   verticalPivot: {fileID: 5662864702870977056}
   cam: {fileID: 8484289721414480301}
   moveSpeed:
-    min: 0.4
-    max: 2.5
+    min: 0.05
+    max: 1.4
   turnSpeed: 1
-  zoomSpeed: 2
+  verticalStartAngle: 20
+  zoomSpeed: 3
   zoomLimit:
-    min: 10
-    max: 100
-  defaultHeight: 20
+    min: 5
+    max: 140
+  defaultHeight: 30
   moveSmoothness: 0.1
   zoomSmoothness: 0.2
   terrainMask:
@@ -275,7 +283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: jumpStrength
-      value: 300
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: walkStrength
@@ -286,8 +294,12 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: playerPerspective
+      value: 
+      objectReference: {fileID: 8080971630426410902}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: counteractStrength
-      value: 400
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: groundedMask.m_Bits
@@ -303,7 +315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4462673710611923858, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6647088805049797252, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: m_RootOrder
@@ -357,3 +369,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6647088805049797252, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
   m_PrefabInstance: {fileID: 7652744328366611346}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5456976649808144948 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+  m_PrefabInstance: {fileID: 7652744328366611346}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208c8945db874cd47a4fbb7b1fe5d7aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

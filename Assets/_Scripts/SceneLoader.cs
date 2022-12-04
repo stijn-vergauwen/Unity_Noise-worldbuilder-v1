@@ -5,37 +5,50 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+  [SerializeField] float changeSceneFadeDuration;
+
+  [Header("Channels")]
   [SerializeField] SceneChangeEventChannelSO sceneChange;
+  [SerializeField] ScreenFadeEventChannelSO screenFade;
 
   SceneName activeScene;
+  bool isChangingScenes;
 
   void OnEnable() {
-    sceneChange.OnSceneChangeRequested += LoadScene;
+    sceneChange.OnSceneChangeRequested += ChangeScene;
   }
 
   void OnDisable() {
-    sceneChange.OnSceneChangeRequested -= LoadScene;
+    sceneChange.OnSceneChangeRequested -= ChangeScene;
   }
 
   void Start() {
     SetStartScene();
   }
 
-  void LoadScene(SceneName sceneToLoad) {
-    if(sceneToLoad == activeScene) return;
-
-    print("Load scene: " + sceneToLoad);
+  void ChangeScene(SceneName sceneToLoad) {
+    if(sceneToLoad == activeScene || isChangingScenes) return;
 
     string sceneName = (
       sceneToLoad == SceneName.MainMenu ?
       "Main menu" : "Full world"
     );
     
-    UnloadCurrentScene();
+    StartCoroutine(ChangeSceneRoutine(sceneToLoad, sceneName));
+  }
 
+  IEnumerator ChangeSceneRoutine(SceneName sceneToLoad, string sceneName) {
+    isChangingScenes = true;
+    screenFade.RaiseEvent(true, changeSceneFadeDuration);
+    yield return new WaitForSeconds(changeSceneFadeDuration);
+
+    UnloadCurrentScene();
     SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     StartCoroutine(ActivateSceneAfterDelay(sceneName));
     activeScene = sceneToLoad;
+
+    screenFade.RaiseEvent(false, changeSceneFadeDuration);
+    isChangingScenes = false;
   }
   
   void UnloadCurrentScene() {
