@@ -5,14 +5,16 @@ using UnityEngine;
 public class FlyingCam : MonoBehaviour
 {
   [SerializeField] CharacterInput input;
+  [SerializeField] PlayerPerspective playerPerspective;
 
   [SerializeField] Transform anchor;
   [SerializeField] Transform verticalPivot;
   [SerializeField] Camera cam;
 
   [Header("Movement")]
-  [SerializeField] float moveSpeed;
+  [SerializeField] MinMax moveSpeed;
   [SerializeField] float turnSpeed;
+  [SerializeField] float verticalStartAngle;
   [SerializeField] float zoomSpeed;
   [SerializeField] MinMax zoomLimit;
   [SerializeField] float defaultHeight;
@@ -24,78 +26,123 @@ public class FlyingCam : MonoBehaviour
   [Header("Other")]
   [SerializeField] LayerMask terrainMask;
 
+  [Header("Player settings")]
+  [SerializeField] bool invertRotation;
+
   Vector3 targetPosition;
+  Vector3 moveVelocity;
+
   float targetZoom;
+  float zoomVelocity;
 
-  void Update() {
-    UpdateMovement(input.movementInput);
-    UpdateRotation(input.turnInput);
-
-    float scrollInput = Input.mouseScrollDelta.y;
-    if(scrollInput != 0) {
-      UpdateZoom(scrollInput);
-    }
+  public void ActivatePerspective(Vector3 position, Quaternion rotation) {
+    anchor.gameObject.SetActive(true);
+    anchor.transform.SetPositionAndRotation(
+      CalculateHeightAdjustedTargetPosition(position),
+      rotation
+    );
+    SetTargetPosition(position);
+    targetZoom = GetCurrentZoom();
+    verticalPivot.localRotation = Quaternion.Euler(Vector3.right * verticalStartAngle);
   }
 
-  // updating values
+  public void DeactivatePerspective() {
+    anchor.gameObject.SetActive(false);
+  }
 
-  void UpdateMovement(Vector3 input) {
-    // steps for movement
-    // 
-    // - change targetPosition by input
-    // - raycast down to find terrain height
-    // - set targetPosition.y as terrain height
-    // - move anchor to new targetPosition using moveSmoothness. taking account of the following:
-    // - if cam is zoomed in, follow terrain height exactly, so no going underground, when far away, ignore terrain height. interpolate between these.
-    // 
+  void Update() {
+    UpdateCameraMovement();
+  }
 
-    Vector3 newTarget = targetPosition + anchor.rotation * input * moveSpeed;
-    SetTargetPosition(
-      newTarget.x,
-      GetTerrainHeight(newTarget),
-      newTarget.z
-    );
-    
+  // Handling input
+
+  void UpdateMovementTarget(Vector3 input) {
+    if(input == Vector3.zero) return;
+
+    Vector3 newTarget = targetPosition + anchor.rotation * input * GetMoveSpeed();
+    SetTargetPosition(newTarget);
   }
 
   void UpdateRotation(Vector2 input) {
-    // steps for rotation
-    // 
-    // - rotate anchor by horizontal input
-    // - rotate verticalPivot by vertical input
-    // - test if this is enough to make it work?
-    // 
+    if(input != Vector2.zero &&
+      Input.GetMouseButton(1)
+    ) {
+      if(invertRotation) input = -input;
+      RotateAnchor(input.x);
+      RotatePivot(input.y);
+    }
   }
 
-  void UpdateZoom(float input) {
-    // steps for zoom
-    // 
-    // - change zoom by input
-    // - clamp zoom to minmax
-    // - move cam z position to zoom value using zoomSmoothness
-    // 
+  void UpdateZoomTarget(float input) {
+    if(input == 0) return;
+
+    targetZoom = Mathf.Clamp(targetZoom + input * zoomSpeed, zoomLimit.min, zoomLimit.max);
   }
 
-  void MoveAnchor(Vector3 target) {
-    anchor.position = targetPosition;
+  // Updating values
+
+  void UpdateCameraMovement() {
+    UpdateMovementTarget(input.movementInput);
+    UpdateRotation(input.turnInput);
+    UpdateZoomTarget(-Input.mouseScrollDelta.y);
+
+    MoveAnchor();
+    ZoomCamera();
   }
 
-  void SetTargetPosition(float x, float y, float z) {
-    targetPosition = new Vector3(x, y, z);
+  void MoveAnchor() {
+    Vector3 newPosition = Vector3.SmoothDamp(anchor.position, CalculateHeightAdjustedTargetPosition(targetPosition), ref moveVelocity, moveSmoothness);
+    anchor.position = newPosition;
+    
+    playerPerspective.SetPlayerPositionAndRotation(targetPosition, anchor.rotation);
   }
+
+  void SetTargetPosition(Vector3 newTarget) {
+    newTarget.y = GetTerrainHeight(newTarget);
+    targetPosition = newTarget;
+  }
+
+  Vector3 CalculateHeightAdjustedTargetPosition(Vector3 target) {
+    Vector3 adjustedTarget = target;
+    adjustedTarget.y = Mathf.Lerp(target.y, defaultHeight, GetZoomPercentage());
+    return adjustedTarget;
+  }
+
+  void RotateAnchor(float angleInput) {
+    anchor.Rotate(Vector3.down, angleInput);
+  }
+
+  void RotatePivot(float angleInput) {
+    verticalPivot.Rotate(Vector3.right, angleInput);
+  }
+
+  void ZoomCamera() {
+    float zPosition = Mathf.SmoothDamp(GetCurrentZoom(), targetZoom, ref zoomVelocity, zoomSmoothness);
+    cam.transform.localPosition = Vector3.back * zPosition;
+  }
+
+  // Utility
 
   float GetTerrainHeight(Vector3 position) {
-    position.y = 50; // height could be adjustable, just needs enough clearance above terrain
+    position.y = 100; // height could be adjustable, just needs enough clearance above terrain
     float terrainHeight = 0;
 
     RaycastHit hit;
-    if(Physics.Raycast(position, Vector3.down, out hit, 50, terrainMask)) {
+    if(Physics.Raycast(position, Vector3.down, out hit, 100, terrainMask)) {
       terrainHeight = hit.point.y;
     }
     return terrainHeight;
   }
 
-  Vector3 GetFlatPosition() {
-    return new Vector3(targetPosition.x, defaultHeight, targetPosition.z);
+  float GetCurrentZoom() {
+    return -cam.transform.localPosition.z;
+  }
+
+  float GetZoomPercentage() {
+    return (GetCurrentZoom() - zoomLimit.min) / (zoomLimit.max - zoomLimit.min);
+  }
+
+  float GetMoveSpeed() {
+    return Mathf.Lerp(moveSpeed.min, moveSpeed.max, GetZoomPercentage());
   }
 }

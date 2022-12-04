@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90df99a618ef50478b021d49063a8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 8167679350277007710}
+  player: {fileID: 3894266120249889046}
   terrainMask:
     serializedVersion: 2
     m_Bits: 128
@@ -101,7 +101,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2843103048238027414}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -109,7 +109,7 @@ Transform:
   - {fileID: 967859180586206396}
   m_Father: {fileID: 3424438542443283010}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &3681616573376320594
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3681616573376320594}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -203,7 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3424438542443283010}
-  - component: {fileID: 4532962702666558248}
+  - component: {fileID: 6751388113131362575}
   m_Layer: 0
   m_Name: FlyingCamAnchor
   m_TagString: Untagged
@@ -227,7 +227,7 @@ Transform:
   m_Father: {fileID: 8167679350277007710}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4532962702666558248
+--- !u!114 &6751388113131362575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,18 +243,21 @@ MonoBehaviour:
   anchor: {fileID: 3424438542443283010}
   verticalPivot: {fileID: 5662864702870977056}
   cam: {fileID: 8484289721414480301}
-  moveSpeed: 0
-  turnSpeed: 0
-  zoomSpeed: 0
+  moveSpeed:
+    min: 0.4
+    max: 2.5
+  turnSpeed: 1
+  zoomSpeed: 2
   zoomLimit:
-    min: 0
-    max: 0
-  defaultHeight: 0
-  moveSmoothness: 0
-  zoomSmoothness: 0
+    min: 10
+    max: 100
+  defaultHeight: 20
+  moveSmoothness: 0.1
+  zoomSmoothness: 0.2
   terrainMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
+  invertRotation: 0
 --- !u!1001 &7652744328366611346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +289,10 @@ PrefabInstance:
       propertyPath: counteractStrength
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 2418170433351659942, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
+      propertyPath: groundedMask.m_Bits
+      value: 385
+      objectReference: {fileID: 0}
     - target: {fileID: 4029747172329170290, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: input
       value: 
@@ -296,7 +303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4462673710611923858, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6647088805049797252, guid: 8fb7d08692c9e244ca8009afe2aef764, type: 3}
       propertyPath: m_RootOrder
