@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerStartPosition : MonoBehaviour
 {
-  [SerializeField] Transform player;
+  [SerializeField] PlayerPerspective player;
   [SerializeField] LayerMask terrainMask;
+
+  [SerializeField] float offsetAboveGround;
 
   void OnEnable() {
     ChunksManager.OnStartareaLoaded += SetStartPosition;
@@ -16,14 +18,14 @@ public class PlayerStartPosition : MonoBehaviour
   }
 
   void SetStartPosition() {
-    Vector3 startPosition = Vector3.up * (GetGroundHeight() + 10);
-    player.position = startPosition;
+    Vector3 startPosition = Vector3.up * (GetGroundHeight() + offsetAboveGround);
+    player.StartPlayer(startPosition);
   }
 
   float GetGroundHeight() {
     float height = 100;
     RaycastHit hit;
-    if(Physics.Raycast(Vector3.up * 100, Vector3.down, out hit, 120, terrainMask)) {
+    if(Physics.Raycast(Vector3.up * height, Vector3.down, out hit, height, terrainMask)) {
       height = hit.point.y;
     }
     return height;

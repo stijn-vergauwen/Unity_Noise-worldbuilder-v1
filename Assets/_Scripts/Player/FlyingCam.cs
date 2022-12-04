@@ -5,6 +5,7 @@ using UnityEngine;
 public class FlyingCam : MonoBehaviour
 {
   [SerializeField] CharacterInput input;
+  [SerializeField] PlayerPerspective playerPerspective;
 
   [SerializeField] Transform anchor;
   [SerializeField] Transform verticalPivot;
@@ -13,6 +14,7 @@ public class FlyingCam : MonoBehaviour
   [Header("Movement")]
   [SerializeField] MinMax moveSpeed;
   [SerializeField] float turnSpeed;
+  [SerializeField] float verticalStartAngle;
   [SerializeField] float zoomSpeed;
   [SerializeField] MinMax zoomLimit;
   [SerializeField] float defaultHeight;
@@ -33,18 +35,19 @@ public class FlyingCam : MonoBehaviour
   float targetZoom;
   float zoomVelocity;
 
-  void OnEnable() {
-    ChunksManager.OnStartareaLoaded += SetStartValues;
-  }
-
-  void OnDisable() {
-    ChunksManager.OnStartareaLoaded -= SetStartValues;
-  }
-
-  void SetStartValues() {
-    SetTargetPosition(Vector3.zero);
-    anchor.position = targetPosition;
+  public void ActivatePerspective(Vector3 position, Quaternion rotation) {
+    anchor.gameObject.SetActive(true);
+    anchor.transform.SetPositionAndRotation(
+      CalculateHeightAdjustedTargetPosition(position),
+      rotation
+    );
+    SetTargetPosition(position);
     targetZoom = GetCurrentZoom();
+    verticalPivot.localRotation = Quaternion.Euler(Vector3.right * verticalStartAngle);
+  }
+
+  public void DeactivatePerspective() {
+    anchor.gameObject.SetActive(false);
   }
 
   void Update() {
@@ -82,28 +85,27 @@ public class FlyingCam : MonoBehaviour
     UpdateMovementTarget(input.movementInput);
     UpdateRotation(input.turnInput);
     UpdateZoomTarget(-Input.mouseScrollDelta.y);
-    
-    if(Mathf.Abs(zoomVelocity) > .1f) {
-      UpdateTargetheight();
-    }
+
     MoveAnchor();
     ZoomCamera();
   }
 
   void MoveAnchor() {
-    anchor.position = Vector3.SmoothDamp(anchor.position, targetPosition, ref moveVelocity, moveSmoothness);
+    Vector3 newPosition = Vector3.SmoothDamp(anchor.position, CalculateHeightAdjustedTargetPosition(targetPosition), ref moveVelocity, moveSmoothness);
+    anchor.position = newPosition;
+    
+    playerPerspective.SetPlayerPositionAndRotation(targetPosition, anchor.rotation);
   }
 
   void SetTargetPosition(Vector3 newTarget) {
+    newTarget.y = GetTerrainHeight(newTarget);
     targetPosition = newTarget;
-    if(Mathf.Abs(zoomVelocity) < .1f) {
-      UpdateTargetheight();
-    }
   }
 
-  void UpdateTargetheight() {
-    float targetHeight = Mathf.Lerp(GetTerrainHeight(targetPosition), defaultHeight, GetZoomPercentage());
-    targetPosition.y = targetHeight;
+  Vector3 CalculateHeightAdjustedTargetPosition(Vector3 target) {
+    Vector3 adjustedTarget = target;
+    adjustedTarget.y = Mathf.Lerp(target.y, defaultHeight, GetZoomPercentage());
+    return adjustedTarget;
   }
 
   void RotateAnchor(float angleInput) {

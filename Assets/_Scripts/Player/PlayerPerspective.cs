@@ -1,36 +1,96 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerPerspective : MonoBehaviour
 {
+  // hold state of player perspective (and player position), and switch between with transition on input
+
   public enum Perspective{FirstPerson, FlyingCam}
 
+  [SerializeField] CharacterMovement firstPersonComponent;
+  [SerializeField] FlyingCam flyingCamComponent;
+  [SerializeField] Perspective startPerspective;
+  [SerializeField] float transitionDuration = 1;
+
+  [Header("Channels")]
+  [SerializeField] ScreenFadeEventChannelSO screenFade;
+
   Perspective currentPerspective;
-
-  Vector3 playerPosition;
-
   Coroutine perspectiveTransition;
 
-  // hold state of player perspective, and switch between with transition on input
+  Vector3 playerPosition;
+  Quaternion playerRotation;
 
-  public void SetPlayerPosition(Vector3 newPosition) {
+  // events
+  public Action<Vector3> OnPositionUpdate;
+
+  // player perspective
+
+  public void StartPlayer(Vector3 startPosition) {
+    SetPlayerPositionAndRotation(startPosition, Quaternion.identity);
+    SetPerspective(startPerspective);
+  }
+
+  void Update() {
+    if(Input.GetKeyDown(KeyCode.T)) {
+      SwitchPerspective();
+    }
+  }
+  
+  void SwitchPerspective() {
+    Perspective newPerspective = currentPerspective == Perspective.FirstPerson ? Perspective.FlyingCam : Perspective.FirstPerson;
+
+    if(perspectiveTransition == null) {
+      perspectiveTransition = StartCoroutine(PerspectiveTransitionRoutine(newPerspective));
+    }
+  }
+
+  void SetPerspective(Perspective newPerspective) {
+    if(newPerspective == Perspective.FirstPerson) {
+      flyingCamComponent.DeactivatePerspective();
+      firstPersonComponent.ActivatePerspective(playerPosition, playerRotation);
+
+    } else if(newPerspective == Perspective.FlyingCam) {
+      firstPersonComponent.DeactivatePerspective();
+      flyingCamComponent.ActivatePerspective(playerPosition, playerRotation);
+    }
+
+    currentPerspective = newPerspective;
+  }
+
+  IEnumerator PerspectiveTransitionRoutine(Perspective newPerspective) {
+    float halfDuration = transitionDuration * .5f;
+
+    screenFade.RaiseEvent(true, halfDuration);
+    yield return new WaitForSeconds(halfDuration);
+
+    SetPerspective(newPerspective);
+
+    screenFade.RaiseEvent(false, halfDuration);
+  }
+
+
+
+
+
+
+
+  // player position
+
+  public void SetPlayerPositionAndRotation(Vector3 newPosition, Quaternion newRotation) {
     playerPosition = newPosition;
+    playerRotation = newRotation;
+    OnPositionUpdate?.Invoke(playerPosition);
   }
 
   public Vector3 GetPlayerPosition() {
     return playerPosition;
   }
 
-  
-
-
-  void SwitchPerspective() {
-    // start transition coroutine if none already active
+  public Vector2 GetFlatPlayerPosition() {
+    return new Vector2(playerPosition.x, playerPosition.z);
   }
 
-
-  // IEnumerator PerspectiveTransitionRoutine(Perspective target) {
-
-  // }
 }

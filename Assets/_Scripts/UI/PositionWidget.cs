@@ -5,17 +5,17 @@ using TMPro;
 
 public class PositionWidget : MonoBehaviour
 {
-  [SerializeField] CharacterController character;
+  [SerializeField] PlayerPerspective player;
 
   [SerializeField] TextMeshProUGUI xPositionText;
   [SerializeField] TextMeshProUGUI zPositionText;
 
   void OnEnable() {
-    character.OnPositionUpdate += UpdateWidget;
+    player.OnPositionUpdate += UpdateWidget;
   }
 
   void OnDisable() {
-    character.OnPositionUpdate -= UpdateWidget;
+    player.OnPositionUpdate -= UpdateWidget;
   }
 
   void UpdateWidget(Vector3 newPosition) {
