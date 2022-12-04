@@ -24,10 +24,10 @@ public class ScreenFade : MonoBehaviour
 
   void ToggleFade(bool fadeScreen, float transitionLength) {
     if(fadeScreen) {
-      ScreenFadeTransition(0, 255, transitionLength);
+      StartCoroutine(ScreenFadeTransition(0, 1, transitionLength));
 
     } else {
-      ScreenFadeTransition(255, 0, transitionLength);
+      StartCoroutine(ScreenFadeTransition(1, 0, transitionLength));
     }
   }
 

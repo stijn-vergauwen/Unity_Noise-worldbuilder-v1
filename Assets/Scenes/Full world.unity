@@ -1670,9 +1670,17 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8080971630426410902, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: screenFade
+      value: 
+      objectReference: {fileID: 11400000, guid: 294e363f315f1a547a9b68144164334e, type: 2}
+    - target: {fileID: 8080971630426410902, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: flyingCamComponent
       value: 
       objectReference: {fileID: 1115328987}
+    - target: {fileID: 8080971630426410902, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+      propertyPath: transitionDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8080971630426410902, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
       propertyPath: firstPersonComponent
       value: 

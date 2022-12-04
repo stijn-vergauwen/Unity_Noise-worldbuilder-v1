@@ -18,7 +18,7 @@ public class PlayerPerspective : MonoBehaviour
   [SerializeField] ScreenFadeEventChannelSO screenFade;
 
   Perspective currentPerspective;
-  Coroutine perspectiveTransition;
+  bool isInPerspectiveTransition;
 
   Vector3 playerPosition;
   Quaternion playerRotation;
@@ -42,8 +42,8 @@ public class PlayerPerspective : MonoBehaviour
   void SwitchPerspective() {
     Perspective newPerspective = currentPerspective == Perspective.FirstPerson ? Perspective.FlyingCam : Perspective.FirstPerson;
 
-    if(perspectiveTransition == null) {
-      perspectiveTransition = StartCoroutine(PerspectiveTransitionRoutine(newPerspective));
+    if(!isInPerspectiveTransition) {
+      StartCoroutine(PerspectiveTransitionRoutine(newPerspective));
     }
   }
 
@@ -61,6 +61,7 @@ public class PlayerPerspective : MonoBehaviour
   }
 
   IEnumerator PerspectiveTransitionRoutine(Perspective newPerspective) {
+    isInPerspectiveTransition = true;
     float halfDuration = transitionDuration * .5f;
 
     screenFade.RaiseEvent(true, halfDuration);
@@ -69,6 +70,7 @@ public class PlayerPerspective : MonoBehaviour
     SetPerspective(newPerspective);
 
     screenFade.RaiseEvent(false, halfDuration);
+    isInPerspectiveTransition = false;
   }
 
 
