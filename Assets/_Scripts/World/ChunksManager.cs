@@ -14,7 +14,7 @@ public class ChunksManager : MonoBehaviour
   [SerializeField] bool randomizeNoiseSeeds = false;
 
   [Header("Player movement based chunk updating")]
-  [SerializeField] Transform playerTransform;
+  [SerializeField] PlayerPerspective playerPerspective;
   [SerializeField] int playerMoveThreshold;
   [SerializeField] int chunkMaxTerrainDistance;
   [SerializeField] int chunkMaxPropDistance;
@@ -79,18 +79,22 @@ public class ChunksManager : MonoBehaviour
   }
 
   public bool CheckChunkVisibility(Chunk chunk) {
-    return ChunkDistanceToPlayer(chunk) < chunkMaxTerrainDistance;
+    return GetDistanceToPlayer(chunk.transform.position) < chunkMaxTerrainDistance;
   }
 
   public bool CheckChunkPropVisibility(Chunk chunk) {
     return (
       worldBuilder.SpawnVegitation &&
-      ChunkDistanceToPlayer(chunk) < chunkMaxPropDistance
+      GetDistanceToPlayer(chunk.transform.position) < chunkMaxPropDistance
     );
   }
 
-  float ChunkDistanceToPlayer(Chunk chunk) {
-    return Vector3.Distance(chunk.transform.position, playerTransform.position);
+  float GetDistanceToPlayer(Vector2 point) {
+    return Vector2.Distance(point, playerPerspective.GetFlatPlayerPosition());
+  }
+
+  float GetDistanceToPlayer(Vector3 point) {
+    return GetDistanceToPlayer(new Vector2(point.x, point.z));
   }
 
   public void CreateVegitationForChunk(Chunk chunk) {
@@ -99,16 +103,13 @@ public class ChunksManager : MonoBehaviour
 
   IEnumerator CheckChunkUpdateRoutine() {
     while(true) {
-      Vector2 flatPlayerPos = new Vector2(playerTransform.position.x, playerTransform.position.z);
-      if(Vector2.Distance(flatPlayerPos, lastUpdatePosition) > playerMoveThreshold) {
-        playerCoord = worldBuilder.PositionToLocalCoord(playerTransform.position);
-        lastUpdatePosition = flatPlayerPos;
+      if(GetDistanceToPlayer(lastUpdatePosition) > playerMoveThreshold) {
+        playerCoord = worldBuilder.PositionToLocalCoord(playerPerspective.GetPlayerPosition());
+        lastUpdatePosition = playerPerspective.GetFlatPlayerPosition();
         UpdateVisibleChunks();
-
-        // print($"Player is in chunk (x:{playerCoord.chunkCoord.x}, y:{playerCoord.chunkCoord.y})");
       }
 
-      yield return new WaitForSeconds(.5f);
+      yield return new WaitForSeconds(.1f);
     }
   }
 
