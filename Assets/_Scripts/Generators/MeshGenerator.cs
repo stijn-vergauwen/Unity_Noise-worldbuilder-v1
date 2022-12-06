@@ -51,6 +51,30 @@ public static class MeshGenerator
     return meshdata;
   }
 
+  public static MeshData GenerateWaterMesh(int meshSize, float tileSize, int lodLevel) {
+    float halfWidth = .5f * meshSize;
+    MeshData meshdata = new MeshData(meshSize);
+    int vertexI = 0;
+
+    for(int y = 0; y < meshSize; y++) {
+      for(int x = 0; x < meshSize; x++) {
+        Vector3 vertexPos = new Vector3((x - halfWidth), 0, (y - halfWidth)) * tileSize;
+        Vector3 normal = Vector3.up;
+        Vector2 uv = new Vector2((float)x / meshSize, (float)y / meshSize);
+        meshdata.AddVertexAndUv(vertexPos, uv, vertexI);
+        meshdata.AddNormal(normal, vertexI);
+
+        if(y > 0 && x > 0) {
+          AddTrianglesAtIndex(ref meshdata, meshSize, vertexI);
+        }
+
+        vertexI++;
+      }
+    }
+
+    return meshdata;
+  }
+
   static void AddTrianglesAtIndex(ref MeshData meshData, int size, int vertexI) {
     meshData.AddTriangle(
       vertexI - size,
@@ -68,6 +92,7 @@ public static class MeshGenerator
 
 public struct MeshData {
   Vector3[] vertices;
+  Vector3[] normals;
   Vector2[] uvs;
   int[] triangles;
 
@@ -78,6 +103,7 @@ public struct MeshData {
     int triangleCount = (meshSize - 1) * (meshSize - 1) * 6;
 
     this.vertices = new Vector3[vertexCount];
+    this.normals = new Vector3[vertexCount];
     this.uvs = new Vector2[vertexCount];
     this.triangles = new int[triangleCount];
     this.triangleI = 0;
@@ -88,6 +114,10 @@ public struct MeshData {
     uvs[vertexI] = uv;
   }
 
+  public void AddNormal(Vector3 normal, int vertexI) {
+    normals[vertexI] = normal;
+  }
+
   public void AddTriangle(int pointA, int pointB, int pointC) {
     triangles[triangleI] = pointA;
     triangles[triangleI + 1] = pointB;
@@ -96,13 +126,18 @@ public struct MeshData {
     triangleI += 3;
   }
 
-  public Mesh CreateMesh() {
+  public Mesh CreateMesh(bool autoNormals) {
     Mesh mesh = new Mesh();
     mesh.vertices = vertices;
     mesh.uv = uvs;
     mesh.triangles = triangles;
 
-    mesh.RecalculateNormals();
+    if(autoNormals) {
+      mesh.RecalculateNormals();
+
+    } else {
+      mesh.normals = normals;
+    }
 
     return mesh;
   }
