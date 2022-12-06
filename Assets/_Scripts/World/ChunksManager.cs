@@ -9,6 +9,7 @@ public class ChunksManager : MonoBehaviour
 
   [SerializeField] WorldBuilder worldBuilder;
   [SerializeField] VegitationPlacer vegitationPlacer;
+  [SerializeField] WaterLayer waterLayer;
   [SerializeField] MapToDraw mapToDraw;
   public bool endlessTerrain;
   [SerializeField] bool randomizeNoiseSeeds = false;
@@ -25,6 +26,11 @@ public class ChunksManager : MonoBehaviour
 
   Dictionary<Coord, Chunk> chunks = new Dictionary<Coord, Chunk>();
 
+  // TODO: make a list<> holding all current active chunks, update this each time UpdateVisibleChunks is called, saves checks & scales better than chunkGenerateRadius
+  // also need to use that list to update water layers of active chunks with water
+
+
+
   public Action<MapToDraw> OnDrawMap;
 
   public static Action OnStartareaLoaded;
@@ -36,9 +42,9 @@ public class ChunksManager : MonoBehaviour
 
     if(endlessTerrain) {
       UpdateVisibleChunks();
-      OnStartareaLoaded?.Invoke();
       StartCoroutine(CheckChunkUpdateRoutine());
     }
+    OnStartareaLoaded?.Invoke();
   }
 
   void Update() {
@@ -109,14 +115,43 @@ public class ChunksManager : MonoBehaviour
         UpdateVisibleChunks();
       }
 
-      yield return new WaitForSeconds(.1f);
+      yield return new WaitForSeconds(.02f);
     }
   }
-
   
   public BiomeSetSO GetBiomeSet() {
     return worldBuilder.BiomeSet;
   }
+
+  public void CheckIfWaterInChunk(Chunk chunk) {
+    int[,] biomeMap = chunk.biomeMap;
+    int mapSize = biomeMap.GetLength(0);
+    bool waterInChunk = false;
+    BiomeSetSO biomeSet = GetBiomeSet();
+
+    for(int y = 0; y < mapSize; y++) {
+      for(int x = 0; x < mapSize; x++) {
+        if(biomeSet.FindBiome(biomeMap[x,y]).biomeName == "Ocean") {
+          waterInChunk = true;
+          break;
+        }
+      }  
+      if(waterInChunk) break;
+    }
+
+    if(waterInChunk) {
+      MeshFilter chunkWaterLayer = waterLayer.CreateChunkWaterLayer(chunk);
+      chunk.SetWaterLayer(chunkWaterLayer);
+    }
+  }
+
+  public void UpdateChunkWaterLayer(MeshFilter waterMeshFilter, Coord chunkCoord) {
+    if(!waterLayer.SimulateWater) return;
+    Vector3[] updatedVertices = waterLayer.CalculateNewMeshVertices(waterMeshFilter.mesh.vertices, chunkCoord);
+    waterMeshFilter.mesh.vertices = updatedVertices;
+  }
+
+  // display other data maps
 
   public void DisplayMap() {
     OnDrawMap?.Invoke(mapToDraw);

@@ -25,6 +25,10 @@ public class Chunk : MonoBehaviour
   MeshRenderer meshRenderer;
   MeshCollider meshCollider;
 
+  // water layer mesh
+  public bool hasWaterLayer {get; private set;} = false;
+  public MeshFilter waterLayerMeshFilter {get; private set;}
+
   public void Init(ChunksManager chunksManager, Coord chunkCoord, float[,] heightMap, float[,] temperatureMap, float[,] humidityMap) {
     manager = chunksManager;
     this.chunkCoord = chunkCoord;
@@ -38,6 +42,7 @@ public class Chunk : MonoBehaviour
 
     meshRenderer.material.SetFloat("_Glossiness", 0);
     CreateBiomeMap();
+    manager.CheckIfWaterInChunk(this);
 
     manager.OnDrawMap += OnDrawMap;
   }
@@ -59,12 +64,12 @@ public class Chunk : MonoBehaviour
   public void CreateFlatMesh(int meshSize, float tileSize) {
     MeshData meshData = MeshGenerator.GenerateFlatMesh(meshSize, tileSize);
 
-    meshFilter.mesh = meshData.CreateMesh();
+    meshFilter.mesh = meshData.CreateMesh(true);
   }
 
   public void CreateMesh(float tileSize, float heightMultiplier, AnimationCurve heightCurve) {
     MeshData meshData = MeshGenerator.GenerateMesh(heightMap, tileSize, heightMultiplier, heightCurve);
-    Mesh mesh = meshData.CreateMesh();
+    Mesh mesh = meshData.CreateMesh(true);
     meshFilter.mesh = mesh;
     meshCollider.sharedMesh = mesh;
   }
@@ -89,6 +94,11 @@ public class Chunk : MonoBehaviour
     hasVegitation = true;
   }
 
+  public void SetWaterLayer(MeshFilter meshFilter) {
+    hasWaterLayer = true;
+    waterLayerMeshFilter = meshFilter;
+  }
+
   // chunk updates
   public void SetChunkActive(bool value) {
     if(meshHolder.activeSelf != value) {
@@ -102,6 +112,16 @@ public class Chunk : MonoBehaviour
         manager.CreateVegitationForChunk(this);
       }
       vegitationPropsHolder.gameObject.SetActive(value);
+    }
+  }
+
+
+  // THIS IS REALLY TEMPORARY THOUGH
+  // TODO: remove this update function, this should move to ChunksManager, but ChunksManager & WorldBuilder need some reworks & refactoring!
+
+  void Update() {
+    if(hasWaterLayer) {
+      manager.UpdateChunkWaterLayer(waterLayerMeshFilter, chunkCoord);
     }
   }
 }

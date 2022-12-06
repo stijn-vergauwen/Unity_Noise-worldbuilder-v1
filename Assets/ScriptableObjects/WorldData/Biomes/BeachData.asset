@@ -16,7 +16,7 @@ MonoBehaviour:
   biomeId: 2
   groundColor: {r: 1, g: 0.97980636, b: 0.3820755, a: 0}
   height:
-    min: 0.4
+    min: 0.36
     max: 0.44
   temperature:
     min: 0.4
