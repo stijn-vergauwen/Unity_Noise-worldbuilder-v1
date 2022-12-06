@@ -52,12 +52,19 @@ public static class MeshGenerator
   }
 
   public static MeshData GenerateWaterMesh(int meshSize, float tileSize, int lodLevel) {
+    if(lodLevel < 1 || (meshSize - 1) % lodLevel != 0) {
+      Debug.LogWarning($"WaterLayer LOD level {lodLevel} is invalid! using value of 1 for now");
+      lodLevel = 1;
+    }
+
+    int adjustedMeshSize = Mathf.RoundToInt(((float)(meshSize - 1) / lodLevel) + 1);
+
     float halfWidth = .5f * meshSize;
-    MeshData meshdata = new MeshData(meshSize);
+    MeshData meshdata = new MeshData(adjustedMeshSize);
     int vertexI = 0;
 
-    for(int y = 0; y < meshSize; y++) {
-      for(int x = 0; x < meshSize; x++) {
+    for(int y = 0; y < meshSize; y+=lodLevel) {
+      for(int x = 0; x < meshSize; x+=lodLevel) {
         Vector3 vertexPos = new Vector3((x - halfWidth), 0, (y - halfWidth)) * tileSize;
         Vector3 normal = Vector3.up;
         Vector2 uv = new Vector2((float)x / meshSize, (float)y / meshSize);
@@ -65,7 +72,7 @@ public static class MeshGenerator
         meshdata.AddNormal(normal, vertexI);
 
         if(y > 0 && x > 0) {
-          AddTrianglesAtIndex(ref meshdata, meshSize, vertexI);
+          AddTrianglesAtIndex(ref meshdata, adjustedMeshSize, vertexI);
         }
 
         vertexI++;

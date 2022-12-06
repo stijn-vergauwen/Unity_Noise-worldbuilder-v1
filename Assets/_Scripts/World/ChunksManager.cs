@@ -115,7 +115,7 @@ public class ChunksManager : MonoBehaviour
         UpdateVisibleChunks();
       }
 
-      yield return new WaitForSeconds(.1f);
+      yield return new WaitForSeconds(.02f);
     }
   }
   
@@ -123,7 +123,9 @@ public class ChunksManager : MonoBehaviour
     return worldBuilder.BiomeSet;
   }
 
-  public void CheckIfWaterInChunk(int[,] biomeMap) {
+  public void CheckIfWaterInChunk(Chunk chunk) {
+    if(!waterLayer.SimulateWater) return;
+    int[,] biomeMap = chunk.biomeMap;
     int mapSize = biomeMap.GetLength(0);
     bool waterInChunk = false;
     BiomeSetSO biomeSet = GetBiomeSet();
@@ -139,8 +141,14 @@ public class ChunksManager : MonoBehaviour
     }
 
     if(waterInChunk) {
-
+      MeshFilter chunkWaterLayer = waterLayer.CreateChunkWaterLayer(chunk);
+      chunk.SetWaterLayer(chunkWaterLayer);
     }
+  }
+
+  public void UpdateChunkWaterLayer(MeshFilter waterMeshFilter, Coord chunkCoord) {
+    Vector3[] updatedVertices = waterLayer.CalculateNewMeshVertices(waterMeshFilter.mesh.vertices, chunkCoord);
+    waterMeshFilter.mesh.vertices = updatedVertices;
   }
 
   // display other data maps

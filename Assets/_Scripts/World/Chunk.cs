@@ -42,7 +42,7 @@ public class Chunk : MonoBehaviour
 
     meshRenderer.material.SetFloat("_Glossiness", 0);
     CreateBiomeMap();
-    manager.CheckIfWaterInChunk(biomeMap);
+    manager.CheckIfWaterInChunk(this);
 
     manager.OnDrawMap += OnDrawMap;
   }
@@ -120,7 +120,9 @@ public class Chunk : MonoBehaviour
   // TODO: remove this update function, this should move to ChunksManager, but ChunksManager & WorldBuilder need some reworks & refactoring!
 
   void Update() {
-
+    if(hasWaterLayer) {
+      manager.UpdateChunkWaterLayer(waterLayerMeshFilter, chunkCoord);
+    }
   }
 }
 
