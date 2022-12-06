@@ -30,7 +30,6 @@ public class WaterLayer : MonoBehaviour
 
   public Vector3[] CalculateNewMeshVertices(Vector3[] vertices, Coord chunkCoord) {
     Vector2 chunkOffset = worldBuilder.ChunkCoordToOffset(chunkCoord);
-    // print("vertex: " + vertices[20]);
     for(int i = 0; i < vertices.Length; i++) {
       vertices[i].y = CalculateHeight(vertices[i].x, vertices[i].z, chunkOffset) * waveHeight;
     }
@@ -40,18 +39,7 @@ public class WaterLayer : MonoBehaviour
   float CalculateHeight(float x, float y, Vector2 chunkOffset) {
     float sampleX = (x + chunkOffset.x) / noiseScale + xOffset;
     float sampleY = (y + chunkOffset.y) / noiseScale + yOffset;
-
-    // if(y == 9.5f) {
-    //   if(x == 9.5f) {
-    //     print("end of chunk, sampleX: " + sampleX);
-    //   }
-
-    //   if(x == -10.5f) {
-    //     print("start of chunk, sampleX: " + sampleX);
-    //   }
-    // }
-
-    return Mathf.PerlinNoise(sampleX, sampleY);
+    return Mathf.PerlinNoise(sampleX, sampleY) - .5f;
   }
 
   void Update() {

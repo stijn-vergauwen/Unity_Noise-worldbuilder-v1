@@ -496,7 +496,7 @@ MonoBehaviour:
   worldSettings:
     tileSize: 1
     chunkSize: 20
-    worldSize: 6
+    worldSize: 3
     heightMap:
       seed: 47
       offset: {x: 0, y: 0}
@@ -527,38 +527,38 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.3557486
+        outSlope: 0.3557486
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.2240882
       - serializedVersion: 3
-        time: 0.23871723
-        value: 0.004913359
-        inSlope: 0.059243064
-        outSlope: 0.059243064
+        time: 0.39050555
+        value: 0.125955
+        inSlope: 0.6559374
+        outSlope: 0.6559374
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.3528929
-        outWeight: 0.33333334
+        inWeight: 0.19093443
+        outWeight: 0.35641
       - serializedVersion: 3
-        time: 0.5200554
-        value: 0.14323604
-        inSlope: 0.82384956
-        outSlope: 0.82384956
+        time: 0.6445695
+        value: 0.29376507
+        inSlope: 1.164418
+        outSlope: 1.164418
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.27351424
-        outWeight: 0.23549104
+        inWeight: 0.24511114
+        outWeight: 0.18063165
       - serializedVersion: 3
-        time: 1.0091288
+        time: 1.0175242
         value: 1.0093359
-        inSlope: 1.1722012
-        outSlope: 1.1722012
+        inSlope: 0.38668898
+        outSlope: 0.38668898
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.1716246
+        inWeight: 0.24477537
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -610,12 +610,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 654255226}
   vegitationPlacer: {fileID: 769866391}
-  waterLayer: {fileID: 0}
+  waterLayer: {fileID: 1803902897}
   mapToDraw: 1
   endlessTerrain: 1
   randomizeNoiseSeeds: 1
   playerPerspective: {fileID: 7652744329506047957}
-  playerMoveThreshold: 10
+  playerMoveThreshold: 5
   chunkMaxTerrainDistance: 300
   chunkMaxPropDistance: 100
   chunkGenerateRadius: 18
@@ -1196,9 +1196,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 654255226}
   waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
-  waterLodLevel: 1
+  simulateWater: 1
+  waterLodLevel: 2
+  seaLevel: 8.9
   waveHeight: 1
-  noiseScale: 0.09
+  noiseScale: 5.74
   timeScale: 0.3
 --- !u!1 &1821783025
 GameObject:

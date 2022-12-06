@@ -124,7 +124,6 @@ public class ChunksManager : MonoBehaviour
   }
 
   public void CheckIfWaterInChunk(Chunk chunk) {
-    if(!waterLayer.SimulateWater) return;
     int[,] biomeMap = chunk.biomeMap;
     int mapSize = biomeMap.GetLength(0);
     bool waterInChunk = false;
@@ -147,6 +146,7 @@ public class ChunksManager : MonoBehaviour
   }
 
   public void UpdateChunkWaterLayer(MeshFilter waterMeshFilter, Coord chunkCoord) {
+    if(!waterLayer.SimulateWater) return;
     Vector3[] updatedVertices = waterLayer.CalculateNewMeshVertices(waterMeshFilter.mesh.vertices, chunkCoord);
     waterMeshFilter.mesh.vertices = updatedVertices;
   }
