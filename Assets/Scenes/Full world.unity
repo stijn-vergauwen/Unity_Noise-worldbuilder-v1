@@ -614,11 +614,12 @@ MonoBehaviour:
   mapToDraw: 1
   endlessTerrain: 1
   randomizeNoiseSeeds: 1
+  biomeTransitionSmoothness: 2
   playerPerspective: {fileID: 7652744329506047957}
   playerMoveThreshold: 5
-  chunkMaxTerrainDistance: 300
-  chunkMaxPropDistance: 100
-  chunkGenerateRadius: 18
+  chunkMaxTerrainDistance: 240
+  chunkMaxPropDistance: 140
+  chunkGenerateRadius: 15
 --- !u!4 &658735395
 Transform:
   m_ObjectHideFlags: 0
@@ -662,7 +663,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.9303958, b: 0.740566, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

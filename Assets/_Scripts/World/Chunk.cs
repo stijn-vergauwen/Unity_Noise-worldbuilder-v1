@@ -20,6 +20,9 @@ public class Chunk : MonoBehaviour
   public bool hasVegitation {get; private set;} = false;
   public VegitationInChunk[] vegitationInChunk {get; private set;}
 
+  Texture2D biomeTexture;
+  bool hasBiomeTexture = false;
+
   ChunksManager manager;
   MeshFilter meshFilter;
   MeshRenderer meshRenderer;
@@ -27,7 +30,7 @@ public class Chunk : MonoBehaviour
 
   // water layer mesh
   public bool hasWaterLayer {get; private set;} = false;
-  public MeshFilter waterLayerMeshFilter {get; private set;}
+  public MeshFilter waterLayerMeshFilter {get; private set;} // TODO: make sure water layers get disabled when out of range
 
   public void Init(ChunksManager chunksManager, Coord chunkCoord, float[,] heightMap, float[,] temperatureMap, float[,] humidityMap) {
     manager = chunksManager;
@@ -43,17 +46,15 @@ public class Chunk : MonoBehaviour
     meshRenderer.material.SetFloat("_Glossiness", 0);
     CreateBiomeMap();
     manager.CheckIfWaterInChunk(this);
-
-    manager.OnDrawMap += OnDrawMap;
-  }
-
-  void OnDisable() {
-    manager.OnDrawMap -= OnDrawMap;
   }
 
   // accessors
   public float GetHeightMapAtCoord(Coord tileCoord) {
     return heightMap[tileCoord.x, tileCoord.y];
+  }
+
+  public int GetBiomeIdAtCoord(Coord tileCoord) {
+    return biomeMap[tileCoord.x, tileCoord.y];
   }
 
   // creating & drawing map data
@@ -76,7 +77,9 @@ public class Chunk : MonoBehaviour
 
   public void OnDrawMap(ChunksManager.MapToDraw mapToDraw) {
     if(mapToDraw == ChunksManager.MapToDraw.Biome) {
-      meshRenderer.material.mainTexture = TextureGenerator.GenerateFromBiomeMap(biomeMap, manager.GetBiomeSet());
+      if(hasBiomeTexture) {
+        meshRenderer.material.mainTexture = biomeTexture;
+      }
 
     } else if(mapToDraw == ChunksManager.MapToDraw.Height) {
       meshRenderer.material.mainTexture = TextureGenerator.GenerateFromNoiseMap(heightMap);
@@ -99,10 +102,38 @@ public class Chunk : MonoBehaviour
     waterLayerMeshFilter = meshFilter;
   }
 
+  // biome texture
+
+  void TryCreateBiomeTexture() {
+    if(manager.CheckIfChunkCanCreateTerrain(chunkCoord)) {
+      biomeTexture = TextureGenerator.GenerateFromColorArray(
+        biomeMap.GetLength(0),
+        manager.CreateAveragedChunkGroundColors(chunkCoord, biomeMap)
+      );
+      meshRenderer.material.mainTexture = biomeTexture;
+      hasBiomeTexture = true;
+    }
+  }
+
+  void CheckBiomeTexture(ChunksManager.MapToDraw mapToDraw) {
+    if(mapToDraw == ChunksManager.MapToDraw.Biome && !hasBiomeTexture) {
+      TryCreateBiomeTexture();
+    }
+  }
+
   // chunk updates
   public void SetChunkActive(bool value) {
     if(meshHolder.activeSelf != value) {
       meshHolder.SetActive(value);
+
+      if(value) {
+        manager.OnDrawMap += OnDrawMap;
+        manager.OnVisibleChunksUpdate += CheckBiomeTexture;
+
+      } else {
+        manager.OnDrawMap -= OnDrawMap;
+        manager.OnVisibleChunksUpdate -= CheckBiomeTexture;
+      }
     }
   }
 
