@@ -18,8 +18,8 @@ RenderSettings:
   m_FogColor: {r: 0.55549127, g: 0.6886792, b: 0.68408656, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 50
-  m_LinearFogEnd: 400
+  m_LinearFogStart: 100
+  m_LinearFogEnd: 450
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -614,9 +614,9 @@ MonoBehaviour:
   mapToDraw: 1
   endlessTerrain: 1
   randomizeNoiseSeeds: 1
-  biomeTransitionSmoothness: 2
+  biomeTransitionSmoothness: 1
   playerPerspective: {fileID: 7652744329506047957}
-  playerMoveThreshold: 5
+  playerMoveThreshold: 10
   chunkMaxTerrainDistance: 240
   chunkMaxPropDistance: 140
   chunkGenerateRadius: 15

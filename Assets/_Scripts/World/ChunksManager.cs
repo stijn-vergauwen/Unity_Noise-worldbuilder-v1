@@ -103,7 +103,7 @@ public class ChunksManager : MonoBehaviour
         UpdateVisibleChunks();
       }
 
-      yield return new WaitForSeconds(.02f);
+      yield return new WaitForSeconds(.05f);
     }
   }
 

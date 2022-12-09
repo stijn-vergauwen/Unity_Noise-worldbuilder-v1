@@ -125,6 +125,9 @@ public class Chunk : MonoBehaviour
   public void SetChunkActive(bool value) {
     if(meshHolder.activeSelf != value) {
       meshHolder.SetActive(value);
+      if(hasWaterLayer) {
+        waterLayerMeshFilter.gameObject.SetActive(value);
+      }
 
       if(value) {
         manager.OnDrawMap += OnDrawMap;
