@@ -29,4 +29,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0694f5f0b1e03a3459965d49e2782961, type: 2}
   - {fileID: 11400000, guid: 85625f8643544504e9650f537efb1aae, type: 2}
   - {fileID: 11400000, guid: fc0107af256b71a4183a22b197d39e5a, type: 2}
-  vegitationDensity: 80
+  vegitationDensity: 35

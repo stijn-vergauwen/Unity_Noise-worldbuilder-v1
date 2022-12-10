@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e42c6a1cec1b74085fd30d58a8e8f5, type: 3}
+  m_Name: Cacti
+  m_EditorClassIdentifier: 
+  setName: Cacti
+  sizeClass: 3
+  useRaycastForPlacement: 0
+  props:
+  - {fileID: 136472, guid: e9ef501c03d9e0f4f8965162fd6bfbba, type: 3}
+  - {fileID: 185962, guid: 9739a89a5ec460c4b94bb52719a0931c, type: 3}
+  - {fileID: 117896, guid: 2150293d12bfb2448a976624bc72a6f2, type: 3}

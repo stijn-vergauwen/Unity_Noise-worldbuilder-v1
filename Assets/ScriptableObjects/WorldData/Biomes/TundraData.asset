@@ -27,4 +27,5 @@ MonoBehaviour:
   biomePriority: 100
   allowedVegitation:
   - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
-  vegitationDensity: 6
+  - {fileID: 11400000, guid: 6308602042da85b43b2ab9e2c2d4408c, type: 2}
+  vegitationDensity: 4
