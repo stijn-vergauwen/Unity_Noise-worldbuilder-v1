@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   setName: Branches
   sizeClass: 2
-  useRaycastForPlacement: 1
+  PlaceWithRaycast: 1
   props:
   - {fileID: 6976615927814636928, guid: 37f9aeb2fdaf19f4a8efd7ce8a593dcd, type: 3}
   - {fileID: 4451941183071688819, guid: 006e392d17557b045b1e173abb80f1e8, type: 3}
-  - {fileID: 2982408054991540482, guid: fdd3446cc2b63d44fb714ae3ca931241, type: 3}
   - {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}

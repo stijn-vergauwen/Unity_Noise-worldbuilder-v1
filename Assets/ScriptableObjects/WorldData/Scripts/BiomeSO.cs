@@ -41,7 +41,9 @@ public class BiomeSO : ScriptableObject
     return allowedVegitation.Length > 0;
   }
 
-  public GameObject GetRandomVegitation() {
-    return allowedVegitation[Random.Range(0, allowedVegitation.Length)].GetRandomProp();
+  public GameObject GetRandomVegitation(out bool placeWithRaycast) {
+    VegitationSetSO vegitationSet = allowedVegitation[Random.Range(0, allowedVegitation.Length)];
+    placeWithRaycast = vegitationSet.CheckNeedsRaycast();
+    return vegitationSet.GetRandomProp();
   }
 }

@@ -614,7 +614,7 @@ MonoBehaviour:
   mapToDraw: 1
   endlessTerrain: 1
   randomizeNoiseSeeds: 1
-  biomeTransitionSmoothness: 1
+  biomeTransitionSmoothness: 2
   playerPerspective: {fileID: 7652744329506047957}
   playerMoveThreshold: 10
   chunkMaxTerrainDistance: 240
@@ -794,6 +794,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 654255226}
+  terrainMask:
+    serializedVersion: 2
+    m_Bits: 128
   maxOffset: 0.5
 --- !u!4 &769866392
 Transform:
@@ -1199,9 +1202,9 @@ MonoBehaviour:
   waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
   simulateWater: 1
   waterLodLevel: 2
-  seaLevel: 9.2
-  waveHeight: 0.8
-  noiseScale: 4.83
+  seaLevel: 9.1
+  waveHeight: 0.6
+  noiseScale: 5.48
   timeScale: 0.15
 --- !u!1 &1821783025
 GameObject:

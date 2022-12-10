@@ -5,6 +5,7 @@ using UnityEngine;
 public class VegitationPlacer : MonoBehaviour
 {
   [SerializeField] WorldBuilder worldBuilder;
+  [SerializeField] LayerMask terrainMask;
 
   [Header("Placement settings")]
   [SerializeField, Range(0, 1)] float maxOffset = 1;
@@ -26,11 +27,20 @@ public class VegitationPlacer : MonoBehaviour
   }
 
   void PlaceVegitationInChunk(Chunk chunk, VegitationInChunk vegitation) {
-    Vector3 tilePosition = worldBuilder.CoordToPosition(chunk.chunkCoord, vegitation.tileCoord);
+    Vector3 propPosition = worldBuilder.CoordToPosition(chunk.chunkCoord, vegitation.tileCoord) + vegitation.posOffset;
+
+    if(vegitation.placeWithRaycast) {
+      RaycastHit hit;
+      Vector3 raisedPosition = propPosition + Vector3.up;
+      float rayDistance = 2;
+      if (Physics.Raycast(raisedPosition, Vector3.down, out hit, rayDistance, terrainMask)) {
+        propPosition.y = hit.point.y;
+      }
+    }
 
     Instantiate(
       vegitation.prefab,
-      tilePosition + vegitation.posOffset,
+      propPosition,
       Quaternion.AngleAxis(vegitation.angle, Vector3.down),
       chunk.PropHolder
     );
@@ -47,9 +57,10 @@ public class VegitationPlacer : MonoBehaviour
           Coord tileCoord = new Coord(x, y);
           Vector3 posOffset = new Vector3(Random.Range(0, 1f), 0, Random.Range(0, 1f)) * worldBuilder.Tilesize * maxOffset;
           int angle = Random.Range(0, 360);
-          GameObject propPrefab = biome.GetRandomVegitation();
+          bool placeWithRaycast;
+          GameObject propPrefab = biome.GetRandomVegitation(out placeWithRaycast);
 
-          VegitationInChunk newVegitation = new VegitationInChunk(tileCoord, posOffset, angle, propPrefab);
+          VegitationInChunk newVegitation = new VegitationInChunk(tileCoord, posOffset, angle, placeWithRaycast, propPrefab);
           vegitationData.Add(newVegitation);
         }
       }

@@ -94,7 +94,6 @@ public class WorldBuilder : MonoBehaviour
     return new Vector2(chunkCoord.x, chunkCoord.y) * ChunkSize;
   }
 
-  // maybe i should rewrite these toPosition functions to raycast down for the height? replace getLowestHeight with height of 1 corner, then go 5 meters up & raycast down
   public Vector3 CoordToPosition(Coord chunkCoord, Coord tileCoord) {
     Vector3 position = CoordToFlatPosition(LocalToWorldCoord(chunkCoord, tileCoord));
     Chunk chunk;

@@ -9,7 +9,7 @@ public class VegitationSetSO : ScriptableObject
 
   [SerializeField] string setName;
   [SerializeField] int sizeClass;
-  [SerializeField] bool useRaycastForPlacement;
+  [SerializeField] bool PlaceWithRaycast;
   [SerializeField] GameObject[] props;
 
   public bool CheckSetName(string name) {
@@ -21,7 +21,7 @@ public class VegitationSetSO : ScriptableObject
   }
 
   public bool CheckNeedsRaycast() {
-    return useRaycastForPlacement;
+    return PlaceWithRaycast;
   }
 
   public GameObject GetRandomProp() {

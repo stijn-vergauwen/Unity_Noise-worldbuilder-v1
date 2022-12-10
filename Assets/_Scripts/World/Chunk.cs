@@ -164,12 +164,14 @@ public struct VegitationInChunk {
   public Coord tileCoord {get; private set;}
   public Vector3 posOffset {get; private set;}
   public int angle {get; private set;}
+  public bool placeWithRaycast {get; private set;}
   public GameObject prefab {get; private set;}
 
-  public VegitationInChunk(Coord tileCoord, Vector3 posOffset, int angle, GameObject prefab) {
+  public VegitationInChunk(Coord tileCoord, Vector3 posOffset, int angle, bool placeWithRaycast, GameObject prefab) {
     this.tileCoord = tileCoord;
     this.posOffset = posOffset;
     this.angle = angle;
+    this.placeWithRaycast = placeWithRaycast;
     this.prefab = prefab;
   }
 }
