@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   setName: Grasses
   sizeClass: 2
+  useRaycastForPlacement: 1
   props:
   - {fileID: 8903058273634794869, guid: f1fc5bb90ac285e4486771552d63bcb8, type: 3}
   - {fileID: 3356751432538110193, guid: ffbddc4ef9676cc419e81e06aaa836d8, type: 3}

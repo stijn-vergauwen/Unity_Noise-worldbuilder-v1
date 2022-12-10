@@ -1199,10 +1199,10 @@ MonoBehaviour:
   waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
   simulateWater: 1
   waterLodLevel: 2
-  seaLevel: 8.9
-  waveHeight: 1
-  noiseScale: 5.74
-  timeScale: 0.3
+  seaLevel: 9.2
+  waveHeight: 0.8
+  noiseScale: 4.83
+  timeScale: 0.15
 --- !u!1 &1821783025
 GameObject:
   m_ObjectHideFlags: 0
