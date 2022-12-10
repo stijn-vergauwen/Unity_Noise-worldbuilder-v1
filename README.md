@@ -8,5 +8,6 @@ some things included:
 - 3d terrain you can walk and fly around in
 - different biomes using temperature and humidity maps
 - tree and vegitation props for each biome
+- simple water layer
 
 Project is available on [itch.io](https://stijn301.itch.io/worldbuilder-prototype-1)
