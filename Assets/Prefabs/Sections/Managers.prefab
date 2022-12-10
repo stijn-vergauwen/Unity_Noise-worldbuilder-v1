@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4019767507606115764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4019767507606115755}
+  - component: {fileID: 4019767507606115754}
+  m_Layer: 0
+  m_Name: WaterLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4019767507606115755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767507606115764}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019767508707459790}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4019767507606115754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767507606115764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac9ded1398f792e48bee905d90fc3c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldBuilder: {fileID: 4019767508905979489}
+  waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
+  simulateWater: 1
+  waterLodLevel: 2
+  seaLevel: 9.1
+  waveHeight: 0.6
+  noiseScale: 5.48
+  timeScale: 0.15
+--- !u!1 &4019767508707459791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4019767508707459790}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4019767508707459790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508707459791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4019767508905979488}
+  - {fileID: 4019767508876905272}
+  - {fileID: 4019767508719595651}
+  - {fileID: 4019767507606115755}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4019767508719595661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4019767508719595651}
+  - component: {fileID: 4019767508719595660}
+  m_Layer: 0
+  m_Name: VegitationPlacer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4019767508719595651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508719595661}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019767508707459790}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4019767508719595660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508719595661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0338da6b7069245887011ae35d3f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldBuilder: {fileID: 4019767508905979489}
+  terrainMask:
+    serializedVersion: 2
+    m_Bits: 128
+  maxOffset: 0.5
+--- !u!1 &4019767508876905274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4019767508876905272}
+  - component: {fileID: 4019767508876905273}
+  m_Layer: 0
+  m_Name: ChunksManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4019767508876905272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508876905274}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019767508707459790}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4019767508876905273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508876905274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73040d1dda1f65945bc5ca76ce84e49e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldBuilder: {fileID: 4019767508905979489}
+  vegitationPlacer: {fileID: 4019767508719595660}
+  waterLayer: {fileID: 4019767507606115754}
+  mapToDraw: 1
+  endlessTerrain: 1
+  randomizeNoiseSeeds: 1
+  biomeTransitionSmoothness: 2
+  playerPerspective: {fileID: 0}
+  playerMoveThreshold: 10
+  chunkMaxTerrainDistance: 240
+  chunkMaxPropDistance: 140
+  chunkGenerateRadius: 15
+--- !u!1 &4019767508905979491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4019767508905979488}
+  - component: {fileID: 4019767508905979489}
+  m_Layer: 0
+  m_Name: WorldBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4019767508905979488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508905979491}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019767508707459790}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4019767508905979489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508905979491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97975e3783f7a774f9b79062ef54e4e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunksManager: {fileID: 4019767508876905273}
+  chunkPrefab: {fileID: 2448587648441038581, guid: 1a3778ba82b75884f829eb3219f9d15e, type: 3}
+  chunkHolder: {fileID: 0}
+  worldSettings:
+    tileSize: 1
+    chunkSize: 20
+    worldSize: 3
+    heightMap:
+      seed: 47
+      offset: {x: 0, y: 0}
+      scale: 240
+      octaves: 7
+      persistance: 0.38
+      lacunarity: 2.3
+    temperatureMap:
+      seed: 81
+      offset: {x: 0, y: 0}
+      scale: 510
+      octaves: 3
+      persistance: 0.4
+      lacunarity: 3.2
+    humidityMap:
+      seed: 33
+      offset: {x: 0, y: 0}
+      scale: 410
+      octaves: 3
+      persistance: 0.45
+      lacunarity: 2.6
+    biomeSet: {fileID: 11400000, guid: 0272f62450e94724b9c0cf43d0f7240d, type: 2}
+    spawnVegitation: 1
+    heightMultiplier: 70
+    meshHeightCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.3557486
+        outSlope: 0.3557486
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.2240882
+      - serializedVersion: 3
+        time: 0.39050555
+        value: 0.125955
+        inSlope: 0.6559374
+        outSlope: 0.6559374
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.19093443
+        outWeight: 0.35641
+      - serializedVersion: 3
+        time: 0.6445695
+        value: 0.29376507
+        inSlope: 1.164418
+        outSlope: 1.164418
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.24511114
+        outWeight: 0.18063165
+      - serializedVersion: 3
+        time: 1.0175242
+        value: 1.0093359
+        inSlope: 0.38668898
+        outSlope: 0.38668898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.24477537
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  buildMode: 1

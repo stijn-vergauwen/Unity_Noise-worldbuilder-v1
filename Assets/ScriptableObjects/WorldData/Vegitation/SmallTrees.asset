@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e42c6a1cec1b74085fd30d58a8e8f5, type: 3}
+  m_Name: SmallTrees
+  m_EditorClassIdentifier: 
+  setName: Small trees
+  sizeClass: 4
+  props:
+  - {fileID: 168064, guid: fb8ae0828a555f74996970b8d0495f15, type: 3}
+  - {fileID: 116970, guid: 38ade0ba7c293f14a9b1b610879e9390, type: 3}
+  - {fileID: 111494, guid: 62724a8cd2495b14f930b7129c3bc47b, type: 3}
+  - {fileID: 188972, guid: 7641c7e8354e2c44cab6432d9d2c6d1b, type: 3}
+  - {fileID: 188992, guid: 11d469914a0208343b39f04223416f9c, type: 3}
+  - {fileID: 147220, guid: 446fc4730aadcd04985c8dafaaf0c501, type: 3}

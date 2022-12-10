@@ -15,5 +15,8 @@ MonoBehaviour:
   setName: TropicalTrees
   sizeClass: 5
   props:
-  - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
-  - {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
+  - {fileID: 180214, guid: aec50823ac9be1b45b5778c3b6c0f51a, type: 3}
+  - {fileID: 136328, guid: 613b4cc8c589ad8458e792ae21891bef, type: 3}
+  - {fileID: 159322, guid: b1b1573cfe717c04caad3e631288f7e9, type: 3}
+  - {fileID: 127550, guid: 87a6cef862ce2cb4a88c5ca5d5af5d2b, type: 3}
+  - {fileID: 115084, guid: 7c5aafe3fe2c6ef4a9150f7f44653760, type: 3}

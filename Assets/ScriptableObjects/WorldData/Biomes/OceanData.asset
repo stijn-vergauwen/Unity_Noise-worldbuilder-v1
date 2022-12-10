@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   biomeName: Ocean
   biomeId: 1
-  groundColor: {r: 0.29703632, g: 0.4773927, b: 0.8396226, a: 0}
+  groundColor: {r: 0.6132076, g: 0.57778436, b: 0.50040054, a: 1}
   height:
     min: 0
-    max: 0.42
+    max: 0.4
   temperature:
     min: 0
     max: 1
   humidity:
     min: 0
     max: 1
-  biomePriority: 100
+  biomePriority: 30
   allowedVegitation: []
+  vegitationDensity: 100
