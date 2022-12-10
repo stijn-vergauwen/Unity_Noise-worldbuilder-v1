@@ -21,7 +21,7 @@ public class Chunk : MonoBehaviour
   public VegitationInChunk[] vegitationInChunk {get; private set;}
 
   Texture2D biomeTexture;
-  bool hasBiomeTexture = false;
+  public bool hasBiomeTexture {get; private set;} = false;
 
   ChunksManager manager;
   MeshFilter meshFilter;

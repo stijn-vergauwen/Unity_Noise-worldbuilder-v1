@@ -92,7 +92,7 @@ public class ChunksManager : MonoBehaviour
         chunk.SetVegitationActive(CheckChunkPropVisibility(chunk));
       }
     }
-    OnVisibleChunksUpdate?.Invoke(mapToDraw);
+    RaiseOnVisibleChunksUpdate();
   }
 
   IEnumerator CheckChunkUpdateRoutine() {
@@ -105,6 +105,10 @@ public class ChunksManager : MonoBehaviour
 
       yield return new WaitForSeconds(.05f);
     }
+  }
+
+  public void RaiseOnVisibleChunksUpdate() {
+    OnVisibleChunksUpdate?.Invoke(mapToDraw);
   }
 
   // chunk visibility, should move to terrainUpdator

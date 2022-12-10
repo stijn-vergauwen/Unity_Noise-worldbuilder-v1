@@ -45,7 +45,20 @@ public class WorldBuilder : MonoBehaviour
         GenerateChunk(new Coord(x, y));
       }
     }
+    chunksManager.RaiseOnVisibleChunksUpdate();
     chunksManager.DisplayMap();
+
+    for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
+      for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
+        Chunk chunk;
+        if(chunksManager.TryGetChunkByCoord(new Coord(x, y), out chunk)) {
+          chunk.SetChunkActive(chunk.hasBiomeTexture);
+          if(SpawnVegitation) {
+            chunk.SetVegitationActive(chunk.hasBiomeTexture);
+          }
+        }
+      }
+    }
   }
 
   public Chunk GenerateChunk(Coord chunkCoord) {
@@ -73,9 +86,6 @@ public class WorldBuilder : MonoBehaviour
 
     if(!chunksManager.endlessTerrain) {
       newChunk.SetChunkActive(true);
-      if(SpawnVegitation) {
-        newChunk.SetVegitationActive(true);
-      }
     }
     return newChunk;
   }
