@@ -22,6 +22,10 @@ public struct Coord {
     return new Coord(x + xOffset, y + yOffset);
   }
 
+  public Coord AddOffset(Coord offset) {
+    return AddOffset(offset.x, offset.y);
+  }
+
   public static bool operator ==(Coord a, Coord b) {
     return a.x == b.x && a.y == b.y;
   }
