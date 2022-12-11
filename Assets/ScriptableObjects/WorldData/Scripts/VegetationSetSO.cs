@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/VegitationSet")]
-public class VegitationSetSO : ScriptableObject
+[CreateAssetMenu(menuName = "SO/VegetationSet")]
+public class VegetationSetSO : ScriptableObject
 {
   // defines a set of nature props (trees, shrubs, rocks) that can be placed
 

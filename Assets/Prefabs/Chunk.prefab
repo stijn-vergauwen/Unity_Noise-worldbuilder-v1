@@ -175,5 +175,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905adb920940f94438b5c72bb2431b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vegitationPropsHolder: {fileID: 1097587125688654293}
+  vegetationPropsHolder: {fileID: 1097587125688654293}
   meshHolder: {fileID: 1500502013263017145}

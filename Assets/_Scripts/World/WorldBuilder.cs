@@ -17,7 +17,7 @@ public class WorldBuilder : MonoBehaviour
   [SerializeField] bool randomizeNoiseSeeds = false;
   [SerializeField, Range(0, 5)] int biomeTransitionSmoothness;
 
-  public bool spawnVegitation;
+  public bool spawnVegetation;
   public bool endlessTerrain;
 
   public MapToDraw mapToDraw;
@@ -71,8 +71,8 @@ public class WorldBuilder : MonoBehaviour
     //     Chunk chunk;
     //     if(chunksManager.TryGetChunkByCoord(new Coord(x, y), out chunk)) {
     //       chunk.SetChunkActive(chunk.hasBiomeTexture);
-    //       if(SpawnVegitation) {
-    //         chunk.SetVegitationActive(chunk.hasBiomeTexture);
+    //       if(SpawnVegetation) {
+    //         chunk.SetVegetationActive(chunk.hasBiomeTexture);
     //       }
     //     }
     //   }

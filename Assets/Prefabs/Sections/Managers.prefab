@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 4019767508905979489}
-  vegitationPlacer: {fileID: 4019767508719595660}
+  vegetationPlacer: {fileID: 4019767508719595660}
   waterLayer: {fileID: 2481685745118988684}
   colorCalculator: {fileID: 766216173750234393}
   terrainUpdator: {fileID: 8618939874773762861}
@@ -184,10 +184,9 @@ MonoBehaviour:
   chunksManager: {fileID: 4019767508876905273}
   worldBuilder: {fileID: 4019767508905979489}
   playerPerspective: {fileID: 0}
-  playerMoveThreshold: 0
-  chunkMaxTerrainDistance: 0
-  chunkMaxPropDistance: 0
-  chunkGenerateRadius: 0
+  playerMoveThreshold: 10
+  chunkMaxTerrainDistance: 300
+  chunkMaxPropDistance: 100
 --- !u!1 &4019767508905979491
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +305,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   randomizeNoiseSeeds: 0
   biomeTransitionSmoothness: 2
-  spawnVegitation: 0
+  spawnVegetation: 1
   endlessTerrain: 1
   mapToDraw: 0
   buildMode: 1

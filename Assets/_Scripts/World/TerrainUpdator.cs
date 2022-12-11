@@ -16,7 +16,7 @@ public class TerrainUpdator : MonoBehaviour
   int chunkSearchRadius;
 
   LocalCoord playerCoord;
-  Vector2 lastUpdatePosition;
+  Vector3 lastUpdatePosition;
 
   public void StartUpdator() {
     chunkSearchRadius = worldBuilder.PositionToLocalCoord(
@@ -32,7 +32,7 @@ public class TerrainUpdator : MonoBehaviour
       for(int xOffset = -chunkSearchRadius + 1; xOffset < chunkSearchRadius; xOffset ++) {
         Chunk chunk = chunksManager.GetOrCreateChunk(playerCoord.chunkCoord.AddOffset(xOffset, yOffset));
         chunk.SetChunkActive(CheckChunkVisibility(chunk));
-        chunk.SetVegitationActive(CheckChunkPropVisibility(chunk));
+        chunk.SetVegetationActive(CheckChunkPropVisibility(chunk));
       }
     }
     chunksManager.RaiseOnVisibleChunksUpdate();
@@ -42,7 +42,7 @@ public class TerrainUpdator : MonoBehaviour
     while(true) {
       if(GetDistanceToPlayer(lastUpdatePosition) > playerMoveThreshold) {
         playerCoord = worldBuilder.PositionToLocalCoord(playerPerspective.GetPlayerPosition());
-        lastUpdatePosition = playerPerspective.GetFlatPlayerPosition();
+        lastUpdatePosition = playerPerspective.GetPlayerPosition();
         UpdateVisibleChunks();
       }
 
@@ -50,22 +50,22 @@ public class TerrainUpdator : MonoBehaviour
     }
   }
 
+  // Chunk visibility
+
   public bool CheckChunkVisibility(Chunk chunk) {
     return GetDistanceToPlayer(chunk.transform.position) < chunkMaxTerrainDistance;
   }
 
   public bool CheckChunkPropVisibility(Chunk chunk) {
     return (
-      worldBuilder.spawnVegitation &&
+      worldBuilder.spawnVegetation &&
       GetDistanceToPlayer(chunk.transform.position) < chunkMaxPropDistance
     );
   }
 
-  float GetDistanceToPlayer(Vector2 point) {
-    return Vector2.Distance(point, playerPerspective.GetFlatPlayerPosition());
-  }
+  // Utility
 
   float GetDistanceToPlayer(Vector3 point) {
-    return GetDistanceToPlayer(new Vector2(point.x, point.z));
+    return Vector3.Distance(point, playerPerspective.GetPlayerPosition());
   }
 }

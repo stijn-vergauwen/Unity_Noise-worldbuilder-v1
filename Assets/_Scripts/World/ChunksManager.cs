@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChunksManager : MonoBehaviour
 {
   [SerializeField] WorldBuilder worldBuilder;
-  [SerializeField] VegitationPlacer vegitationPlacer;
+  [SerializeField] VegetationPlacer vegetationPlacer;
   [SerializeField] WaterLayer waterLayer;
   [SerializeField] GroundColorCalculator colorCalculator;
   [SerializeField] TerrainUpdator terrainUpdator;
@@ -94,8 +94,8 @@ public class ChunksManager : MonoBehaviour
     return worldBuilder.BiomeSet;
   }
 
-  public void CreateVegitationForChunk(Chunk chunk) {
-    vegitationPlacer.PlaceVegitationProps(chunk, worldBuilder.ChunkSize, worldBuilder.BiomeSet);
+  public void CreateVegetationForChunk(Chunk chunk) {
+    vegetationPlacer.PlaceVegetationProps(chunk, worldBuilder.ChunkSize, worldBuilder.BiomeSet);
   }
 
   public bool CheckIfChunkCanCreateTerrain(Coord chunkCoord) {
