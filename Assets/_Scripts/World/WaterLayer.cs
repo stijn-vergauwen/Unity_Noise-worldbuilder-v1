@@ -20,6 +20,18 @@ public class WaterLayer : MonoBehaviour
   float xOffset;
   float yOffset;
 
+  public bool CheckIfWaterInChunk(int[,] biomeMap) {
+    int mapSize = biomeMap.GetLength(0);
+    int oceanBiomeId = worldBuilder.BiomeSet.FindBiome("Ocean").biomeId;
+
+    for(int y = 0; y < mapSize; y++) {
+      for(int x = 0; x < mapSize; x++) {
+        if(biomeMap[x,y] == oceanBiomeId) return true;
+      }
+    }
+    return false;
+  }
+
   public MeshFilter CreateChunkWaterLayer(Chunk chunk) {
     Vector3 waterLayerPosition = new Vector3(chunk.transform.position.x, seaLevel, chunk.transform.position.z);
     MeshFilter newWaterLayer = Instantiate(waterLayerPrefab, waterLayerPosition, Quaternion.identity, chunk.transform);
@@ -41,6 +53,8 @@ public class WaterLayer : MonoBehaviour
     float sampleY = (y + chunkOffset.y) / noiseScale + yOffset;
     return Mathf.PerlinNoise(sampleX, sampleY) - .5f;
   }
+
+  // incrementing noise offset
 
   void Update() {
     UpdateOffset();

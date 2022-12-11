@@ -1354,26 +1354,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
-    - target: {fileID: 4019767508876905273, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
-      propertyPath: playerPerspective
-      value: 
-      objectReference: {fileID: 7652744329506047957}
-    - target: {fileID: 4019767508876905273, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
-      propertyPath: chunkGenerateRadius
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019767508876905273, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
-      propertyPath: chunkMaxPropDistance
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019767508876905273, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
-      propertyPath: chunkMaxTerrainDistance
-      value: 300
-      objectReference: {fileID: 0}
     - target: {fileID: 4019767508905979489, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: chunkHolder
       value: 
       objectReference: {fileID: 1250442913}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: playerPerspective
+      value: 
+      objectReference: {fileID: 7652744329506047957}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: playerMoveThreshold
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: chunkMaxPropDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: chunkMaxTerrainDistance
+      value: 300
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
 --- !u!1001 &7652744329506047956
