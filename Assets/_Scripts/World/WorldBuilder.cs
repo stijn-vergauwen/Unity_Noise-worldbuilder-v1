@@ -85,8 +85,6 @@ public class WorldBuilder : MonoBehaviour
 
     Chunk newChunk = CreateChunk(chunkCoord, chunkOffset, chunkPosition);
 
-    chunksManager.AddChunk(chunkCoord, newChunk);
-
     if(buildMode == BuildMode.Map) {
       newChunk.CreateFlatMesh(ChunkMapSize, Tilesize);
       
@@ -94,8 +92,11 @@ public class WorldBuilder : MonoBehaviour
       newChunk.CreateMesh(Tilesize, worldSettings.heightMultiplier, worldSettings.meshHeightCurve);
     }
 
+    newChunk.DrawMap(mapToDraw);
+
     if(!endlessTerrain) {
-      newChunk.SetChunkActive(true);
+      // TODO: after the new system of chunk data visibility, rework these methods in worldBuilder
+      // newChunk.SetChunkActive(true);
     }
     return newChunk;
   }

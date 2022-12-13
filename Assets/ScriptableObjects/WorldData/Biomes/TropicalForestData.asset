@@ -25,11 +25,11 @@ MonoBehaviour:
     min: 0.6
     max: 1
   biomePriority: 80
-  allowedVegitation:
-  - {fileID: 11400000, guid: 0694f5f0b1e03a3459965d49e2782961, type: 2}
+  allowedVegetation:
   - {fileID: 11400000, guid: fc0107af256b71a4183a22b197d39e5a, type: 2}
-  - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
   - {fileID: 11400000, guid: 85625f8643544504e9650f537efb1aae, type: 2}
+  - {fileID: 11400000, guid: 0694f5f0b1e03a3459965d49e2782961, type: 2}
+  - {fileID: 11400000, guid: ce55cbd42a570cf4d9127dc5a4f37929, type: 2}
+  - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
   - {fileID: 11400000, guid: c82ab790c6b45f94abfaafe1f2655dfb, type: 2}
-  - {fileID: 11400000, guid: b5c06efafebcd1d45be688b7de0aeba0, type: 2}
-  vegitationDensity: 300
+  vegetationDensity: 300

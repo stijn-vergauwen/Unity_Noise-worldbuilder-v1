@@ -19,10 +19,6 @@ public class ChunksManager : MonoBehaviour
   // also need to use that list to update water layers of active chunks with water
 
 
-
-  public Action<MapToDraw> OnDrawMap;
-  public Action<MapToDraw> OnVisibleChunksUpdate;
-
   public static Action OnStartareaLoaded;
 
   // setup
@@ -55,13 +51,17 @@ public class ChunksManager : MonoBehaviour
     Chunk chunk;
     if(!TryGetChunkByCoord(chunkCoord, out chunk)) {
       chunk = worldBuilder.SetupNewChunk(chunkCoord);
-      chunk.OnDrawMap(worldBuilder.mapToDraw);
+      AddChunk(chunkCoord, chunk);
     }
     return chunk;
   }
 
-  public void ClearChunks() {
+  void ClearChunks() {
     chunks.Clear();
+  }
+
+  public Chunk[] GetActiveChunks() {
+    return activeChunks.ToArray();
   }
 
   public void AddActiveChunk(Chunk chunk) {
@@ -69,12 +69,13 @@ public class ChunksManager : MonoBehaviour
   }
 
   public void ClearActiveChunks() {
+    DeactivateAllActiveChunks();
     activeChunks.Clear();
   }
 
-  public void HideAllActiveChunks() {
+  public void DeactivateAllActiveChunks() {
     foreach(Chunk chunk in activeChunks) {
-      chunk.SetChunkActive(false);
+      chunk.DeactivateChunk();
     }
   }
 
@@ -84,44 +85,54 @@ public class ChunksManager : MonoBehaviour
     OnStartareaLoaded?.Invoke();
   }
 
-  public void RaiseOnVisibleChunksUpdate() {
-    OnVisibleChunksUpdate?.Invoke(worldBuilder.mapToDraw);
+  public void ActivateChunk(Chunk chunk) {
+    if(!chunk.hasBiomeTexture) {
+      if(!CheckIfChunkCanCreateTerrain(chunk.chunkCoord)) return;
+
+      chunk.SetTerrain(colorCalculator.CalculateGroundColors(
+        chunk.chunkCoord,
+        chunk.biomeMap
+      ));
+
+      chunk.DrawMap(worldBuilder.mapToDraw);
+    }
+
+    AddActiveChunk(chunk);
+
+    chunk.ToggleTerrain(true);
+    chunk.ToggleWater(true);
   }
 
-  // chunk class communication
-  
-  public BiomeSetSO GetBiomeSet() {
-    return worldBuilder.BiomeSet;
+  public void ActivateChunkVegetation(Chunk chunk) {
+    if(!chunk.hasVegetation) {
+      CreateVegetationForChunk(chunk);
+    }
+
+    chunk.ToggleVegetation(true);
   }
 
-  public void CreateVegetationForChunk(Chunk chunk) {
+  public void ActivateChunkWaterLayer(Chunk chunk) {
+    if(chunk.hasWaterLayer) {
+      chunk.simulateChunkWater = true;
+    }
+  }
+
+  // chunk data
+
+  void CreateVegetationForChunk(Chunk chunk) {
     vegetationPlacer.PlaceVegetationProps(chunk, worldBuilder.ChunkSize, worldBuilder.BiomeSet);
   }
 
-  public bool CheckIfChunkCanCreateTerrain(Coord chunkCoord) {
-    return GetChunkNeighborCount(chunkCoord) == 8;
-  }
-
-  public Color[] CalculateGroundColors(Coord chunkCoord, int[,] biomeMap) {
-    return colorCalculator.CalculateGroundColors(chunkCoord, biomeMap);
-  }
-
-  // water layer related
-
-  public void CheckIfWaterInChunk(Chunk chunk) {
+  public void TryCreateChunkWaterLayer(Chunk chunk) {
     if(waterLayer.CheckIfWaterInChunk(chunk.biomeMap)) {
       MeshFilter chunkWaterLayer = waterLayer.CreateChunkWaterLayer(chunk);
       chunk.SetWaterLayer(chunkWaterLayer);
     }
   }
 
-  public void UpdateChunkWaterLayer(MeshFilter waterMeshFilter, Coord chunkCoord) {
-    if(!waterLayer.SimulateWater) return;
-    Vector3[] updatedVertices = waterLayer.CalculateNewMeshVertices(waterMeshFilter.mesh.vertices, chunkCoord);
-    waterMeshFilter.mesh.vertices = updatedVertices;
+  bool CheckIfChunkCanCreateTerrain(Coord chunkCoord) {
+    return GetChunkNeighborCount(chunkCoord) == 8;
   }
-
-  // smoothing biome colors
 
   int GetChunkNeighborCount(Coord chunkCoord) {
     int neighborCount = 0;
@@ -149,14 +160,16 @@ public class ChunksManager : MonoBehaviour
 
   // display other data maps
 
-  public void DisplayMap() {
-    OnDrawMap?.Invoke(worldBuilder.mapToDraw);
+  public void UpdateDrawnMap() {
+    foreach(Chunk chunk in chunks.Values) {
+      chunk.DrawMap(worldBuilder.mapToDraw);
+    }
   }
 
   void CheckPlayerInput() {
     if(Input.GetKeyDown(KeyCode.M)) {
       NextMapToDraw();
-      DisplayMap();
+      UpdateDrawnMap();
     }
   }
 
@@ -168,13 +181,17 @@ public class ChunksManager : MonoBehaviour
       worldBuilder.mapToDraw++;
     }
   }
+  
+  public BiomeSetSO GetBiomeSet() {
+    return worldBuilder.BiomeSet;
+  }
 
-  // void OnDrawGizmos() {
-  //   Gizmos.color = Color.green;
-  //   foreach(Chunk chunk in chunks.Values) {
-  //     Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
-  //     Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
-  //     Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
-  //   }
-  // }
+  void OnDrawGizmos() {
+    Gizmos.color = Color.green;
+    foreach(Chunk chunk in chunks.Values) {
+      Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
+      Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
+      Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
+    }
+  }
 }

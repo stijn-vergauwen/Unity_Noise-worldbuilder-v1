@@ -30,7 +30,8 @@ public class Chunk : MonoBehaviour
 
   // water layer mesh
   public bool hasWaterLayer {get; private set;} = false;
-  public MeshFilter waterLayerMeshFilter {get; private set;}
+  public bool simulateChunkWater = false;
+  MeshFilter waterLayerMeshFilter;
 
   public void Init(ChunksManager chunksManager, Coord chunkCoord, float[,] heightMap, float[,] temperatureMap, float[,] humidityMap) {
     manager = chunksManager;
@@ -45,7 +46,7 @@ public class Chunk : MonoBehaviour
 
     meshRenderer.material.SetFloat("_Glossiness", 0);
     CreateBiomeMap();
-    manager.CheckIfWaterInChunk(this);
+    manager.TryCreateChunkWaterLayer(this);
   }
 
   // accessors
@@ -75,7 +76,7 @@ public class Chunk : MonoBehaviour
     meshCollider.sharedMesh = mesh;
   }
 
-  public void OnDrawMap(MapToDraw mapToDraw) {
+  public void DrawMap(MapToDraw mapToDraw) {
     if(mapToDraw == MapToDraw.Biome) {
       if(hasBiomeTexture) {
         meshRenderer.material.mainTexture = biomeTexture;
@@ -95,8 +96,9 @@ public class Chunk : MonoBehaviour
   public void SetTerrain(Color[] groundColorArray) {
     biomeTexture = TextureGenerator.GenerateFromColorArray(
       biomeMap.GetLength(0),
-      manager.CalculateGroundColors(chunkCoord, biomeMap)
+      groundColorArray
     );
+    // maybe set meshRenderer to this texture
     hasBiomeTexture = true;
   }
 
@@ -110,73 +112,45 @@ public class Chunk : MonoBehaviour
     hasWaterLayer = true;
   }
 
-  // biome texture
-
-  void TryCreateBiomeTexture() {
-    if(manager.CheckIfChunkCanCreateTerrain(chunkCoord)) {
-      biomeTexture = TextureGenerator.GenerateFromColorArray(
-        biomeMap.GetLength(0),
-        manager.CalculateGroundColors(chunkCoord, biomeMap)
-      );
-      meshRenderer.material.mainTexture = biomeTexture;
-      hasBiomeTexture = true;
-    }
-  }
-
-  void CheckBiomeTexture(MapToDraw mapToDraw) {
-    if(mapToDraw == MapToDraw.Biome && !hasBiomeTexture) {
-      TryCreateBiomeTexture();
-    }
-  }
-
   // chunk updates
-  public void SetChunkActive(bool value) {
-    if(meshHolder.activeSelf != value) {
-      meshHolder.SetActive(value);
-      if(hasWaterLayer) {
-        waterLayerMeshFilter.gameObject.SetActive(value);
-      }
 
-      if(value) {
-        manager.OnDrawMap += OnDrawMap;
-        manager.OnVisibleChunksUpdate += CheckBiomeTexture;
-
-      } else {
-        manager.OnDrawMap -= OnDrawMap;
-        manager.OnVisibleChunksUpdate -= CheckBiomeTexture;
-      }
-    }
-  }
-
-  public void SetVegetationActive(bool value) {
-    if(vegetationPropsHolder.gameObject.activeSelf != value) {
-      if(value && !hasVegetation) {
-        manager.CreateVegetationForChunk(this);
-      }
-      vegetationPropsHolder.gameObject.SetActive(value);
-    }
+  public void DeactivateChunk() {
+    ToggleTerrain(false);
+    ToggleVegetation(false);
+    ToggleWater(false);
+    simulateChunkWater = false;
   }
 
   public void ToggleTerrain(bool isVisible) {
-    
+    if(hasBiomeTexture) {
+      meshHolder.SetActive(isVisible);
+    }
   }
 
   public void ToggleVegetation(bool isVisible) {
-    
+    if(hasVegetation) {
+      vegetationPropsHolder.gameObject.SetActive(isVisible);
+    }
   }
 
   public void ToggleWater(bool isVisible) {
-
+    if(hasWaterLayer) {
+      waterLayerMeshFilter.gameObject.SetActive(isVisible);
+    }
   }
 
+  void DestroyVegetation() {
+    // destroy all vegetation objects in this chunk, but keep the data
+  }
 
-  // THIS IS REALLY TEMPORARY THOUGH
-  // TODO: remove this update function, this should move to ChunksManager, but ChunksManager & WorldBuilder need some reworks & refactoring!
+  // water updates
 
-  void Update() {
-    if(hasWaterLayer) {
-      manager.UpdateChunkWaterLayer(waterLayerMeshFilter, chunkCoord);
-    }
+  public Vector3[] GetWaterVertices() {
+    return waterLayerMeshFilter.mesh.vertices; // this allocates garbage every frame, use GetVertices() if you want to optimize
+  }
+
+  public void UpdateWaterVertices(Vector3[] newVertices) {
+    waterLayerMeshFilter.mesh.vertices = newVertices;
   }
 }
 
