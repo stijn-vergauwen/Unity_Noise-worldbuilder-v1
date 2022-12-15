@@ -12,21 +12,13 @@ public class ChunksManager : MonoBehaviour
   [SerializeField] TerrainUpdator terrainUpdator;
 
   Dictionary<Coord, Chunk> chunks = new Dictionary<Coord, Chunk>();
-
   List<Chunk> activeChunks = new List<Chunk>();
-
-  // TODO: make a list<> holding all current active chunks, update this each time UpdateVisibleChunks is called, saves checks & scales better than chunkGenerateRadius
-  // also need to use that list to update water layers of active chunks with water
-
 
   public static Action OnStartareaLoaded;
 
   // setup
-  void Start() {
-    if(worldBuilder.endlessTerrain) {
-      terrainUpdator.StartUpdator();
-      RaiseStartAreaLoaded();
-    }
+  public void StartUpdator() {
+    terrainUpdator.StartUpdator();
   }
 
   void Update() {
@@ -68,6 +60,10 @@ public class ChunksManager : MonoBehaviour
     activeChunks.Add(chunk);
   }
 
+  public void RemoveActiveChunk(Chunk chunk) {
+    activeChunks.Remove(chunk);
+  }
+
   public void ClearActiveChunks() {
     DeactivateAllActiveChunks();
     activeChunks.Clear();
@@ -97,23 +93,29 @@ public class ChunksManager : MonoBehaviour
       chunk.DrawMap(worldBuilder.mapToDraw);
     }
 
-    AddActiveChunk(chunk);
-
     chunk.ToggleTerrain(true);
     chunk.ToggleWater(true);
   }
 
-  public void ActivateChunkVegetation(Chunk chunk) {
-    if(!chunk.hasVegetation) {
+  public void ToggleChunkVegetation(Chunk chunk, bool value) {
+    if(value && !chunk.hasVegetation) {
       CreateVegetationForChunk(chunk);
     }
 
-    chunk.ToggleVegetation(true);
+    chunk.ToggleVegetation(value);
   }
 
-  public void ActivateChunkWaterLayer(Chunk chunk) {
-    if(chunk.hasWaterLayer) {
-      chunk.simulateChunkWater = true;
+  public void ToggleChunkWaterLayer(Chunk chunk, bool value) {
+    chunk.ToggleWaterSimulation(value);
+  }
+
+  public void DeactivateChunkAtCoord(Coord chunkCoord) {
+    Chunk chunk;
+    if(TryGetChunkByCoord(chunkCoord, out chunk)) {
+      chunk.DeactivateChunk();
+
+    } else {
+      Debug.LogWarning("Tried to deactivate a chunk that doesn't exist, this should NOT happen");
     }
   }
 

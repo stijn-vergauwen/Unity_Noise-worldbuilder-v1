@@ -30,7 +30,7 @@ public class Chunk : MonoBehaviour
 
   // water layer mesh
   public bool hasWaterLayer {get; private set;} = false;
-  public bool simulateChunkWater = false;
+  public bool simulateChunkWater {get; private set;} = false;
   MeshFilter waterLayerMeshFilter;
 
   public void Init(ChunksManager chunksManager, Coord chunkCoord, float[,] heightMap, float[,] temperatureMap, float[,] humidityMap) {
@@ -139,14 +139,24 @@ public class Chunk : MonoBehaviour
     }
   }
 
+  public void ToggleWaterSimulation(bool simulate) {
+    if(hasWaterLayer) {
+      simulateChunkWater = simulate;
+
+      if(!simulate) {
+        // TODO: Reset water vertices to y = 0
+      }
+    }
+  }
+
   void DestroyVegetation() {
-    // destroy all vegetation objects in this chunk, but keep the data
+    // TODO: destroy all vegetation objects in this chunk, but keep the data
   }
 
   // water updates
 
   public Vector3[] GetWaterVertices() {
-    return waterLayerMeshFilter.mesh.vertices; // this allocates garbage every frame, use GetVertices() if you want to optimize
+    return waterLayerMeshFilter.mesh.vertices; // TODO: this allocates garbage every frame, use GetVertices() if you want to optimize
   }
 
   public void UpdateWaterVertices(Vector3[] newVertices) {

@@ -1378,9 +1378,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1250442913}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: maxPropDistance
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: maxRenderDistance
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: playerPerspective
       value: 
       objectReference: {fileID: 7652744329506047957}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: playerMoveThreshold
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: maxWaterSimulatingDistance
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
 --- !u!114 &4019767508251724316 stripped

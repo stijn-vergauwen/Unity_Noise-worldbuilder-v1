@@ -40,10 +40,14 @@ public class WorldBuilder : MonoBehaviour
   }
 
   void Start() {
-    if(!endlessTerrain) {
+    if(endlessTerrain) {
+      chunksManager.StartUpdator();
+
+    } else {
       GenerateWorld();
-      chunksManager.RaiseStartAreaLoaded();
     }
+
+    chunksManager.RaiseStartAreaLoaded();
   }
 
   void RandomizeSeedValues() {
@@ -203,6 +207,13 @@ public class WorldBuilder : MonoBehaviour
       chunk.GetHeightMapAtCoord(tileCoord.AddOffset(1, 1))
     };
     return Mathf.Min(heightsOfCorners);
+  }
+
+  public Coord GetHalfChunkSize() {
+    return new Coord(
+      Mathf.RoundToInt(ChunkSize * .5f),
+      Mathf.RoundToInt(ChunkSize * .5f)
+    );
   }
 
 
