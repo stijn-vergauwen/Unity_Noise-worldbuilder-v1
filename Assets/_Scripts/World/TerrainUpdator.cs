@@ -127,12 +127,16 @@ public class TerrainUpdator : MonoBehaviour
     float distanceToPlayer = GetDistanceToPlayer(
       worldBuilder.CoordToPosition(chunkCoord, worldBuilder.GetHalfChunkSize())
     );
+
+    bool isNewChunk = !chunksManager.CheckChunkByCoord(chunkCoord);
   
     Chunk chunk = chunksManager.GetOrCreateChunk(chunkCoord);
     chunksManager.ActivateChunk(chunk);
 
-    chunksManager.ToggleChunkVegetation(chunk, ShowChunkVegetation(distanceToPlayer));
-    chunksManager.ToggleChunkWaterLayer(chunk, SimulateChunkWater(distanceToPlayer));
+    if(!isNewChunk) {
+      chunksManager.ToggleChunkVegetation(chunk, ShowChunkVegetation(distanceToPlayer));
+      chunksManager.ToggleChunkWaterLayer(chunk, SimulateChunkWater(distanceToPlayer));
+    }
     
     if(chunkActivity.HasActivated()) {
       chunksManager.AddActiveChunk(chunk);

@@ -113,9 +113,6 @@ public class ChunksManager : MonoBehaviour
     Chunk chunk;
     if(TryGetChunkByCoord(chunkCoord, out chunk)) {
       chunk.DeactivateChunk();
-
-    } else {
-      Debug.LogWarning("Tried to deactivate a chunk that doesn't exist, this should NOT happen");
     }
   }
 

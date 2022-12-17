@@ -1373,6 +1373,10 @@ PrefabInstance:
       propertyPath: chunkHolder
       value: 
       objectReference: {fileID: 1250442913}
+    - target: {fileID: 4019767508905979489, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: randomizeNoiseSeeds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxPropDistance
       value: 180
