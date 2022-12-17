@@ -18,6 +18,7 @@ public class Chunk : MonoBehaviour
   public int[,] biomeMap {get; private set;}
 
   public bool hasVegetation {get; private set;} = false;
+  public bool hasVegetationData {get; private set;} = false;
   public VegetationInChunk[] vegetationInChunk {get; private set;}
 
   public bool hasBiomeTexture {get; private set;} = false;
@@ -104,7 +105,7 @@ public class Chunk : MonoBehaviour
 
   public void SetVegetation(VegetationInChunk[] vegetation) {
     vegetationInChunk = vegetation;
-    hasVegetation = true;
+    hasVegetationData = true;
   }
 
   public void SetWaterLayer(MeshFilter meshFilter) {
@@ -119,22 +120,27 @@ public class Chunk : MonoBehaviour
     ToggleVegetation(false);
     ToggleWater(false);
     simulateChunkWater = false;
+    DestroyVegetation();
   }
 
   public void ToggleTerrain(bool isVisible) {
-    if(hasBiomeTexture) {
+    if(hasBiomeTexture && meshHolder.activeSelf != isVisible) {
       meshHolder.SetActive(isVisible);
     }
   }
 
   public void ToggleVegetation(bool isVisible) {
-    if(hasVegetation) {
+    if(hasVegetationData && vegetationPropsHolder.gameObject.activeSelf != isVisible) {
       vegetationPropsHolder.gameObject.SetActive(isVisible);
+      
+      if(isVisible) {
+        hasVegetation = true; // TODO: TEST if this hasVegetation & the data works like this, idk if it does
+      }
     }
   }
 
   public void ToggleWater(bool isVisible) {
-    if(hasWaterLayer) {
+    if(hasWaterLayer && waterLayerMeshFilter.gameObject.activeSelf != isVisible) {
       waterLayerMeshFilter.gameObject.SetActive(isVisible);
     }
   }
@@ -150,7 +156,10 @@ public class Chunk : MonoBehaviour
   }
 
   void DestroyVegetation() {
-    // TODO: destroy all vegetation objects in this chunk, but keep the data
+    foreach(Transform prop in vegetationPropsHolder) {
+      Destroy(prop.gameObject);
+    }
+    hasVegetation = false;
   }
 
   // water updates
@@ -161,21 +170,5 @@ public class Chunk : MonoBehaviour
 
   public void UpdateWaterVertices(Vector3[] newVertices) {
     waterLayerMeshFilter.mesh.vertices = newVertices;
-  }
-}
-
-public struct VegetationInChunk {
-  public Coord tileCoord {get; private set;}
-  public Vector3 posOffset {get; private set;}
-  public int angle {get; private set;}
-  public bool placeWithRaycast {get; private set;}
-  public GameObject prefab {get; private set;}
-
-  public VegetationInChunk(Coord tileCoord, Vector3 posOffset, int angle, bool placeWithRaycast, GameObject prefab) {
-    this.tileCoord = tileCoord;
-    this.posOffset = posOffset;
-    this.angle = angle;
-    this.placeWithRaycast = placeWithRaycast;
-    this.prefab = prefab;
   }
 }

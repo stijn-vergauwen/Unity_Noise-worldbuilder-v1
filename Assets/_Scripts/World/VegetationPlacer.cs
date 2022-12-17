@@ -11,7 +11,7 @@ public class VegetationPlacer : MonoBehaviour
   [SerializeField, Range(0, 1)] float maxOffset = 1;
 
   public void PlaceVegetationProps(Chunk chunk, int chunkSize, BiomeSetSO biomeSet) {
-    if(!chunk.hasVegetation) {
+    if(!chunk.hasVegetationData) {
       chunk.SetVegetation(GenerateVegetationData(
         chunk.biomeMap,
         chunkSize,
@@ -19,9 +19,7 @@ public class VegetationPlacer : MonoBehaviour
       ));
     }
 
-    VegetationInChunk[] vegetationData = chunk.vegetationInChunk;
-
-    foreach(VegetationInChunk vegetation in vegetationData) {
+    foreach(VegetationInChunk vegetation in chunk.vegetationInChunk) {
       PlaceVegetationInChunk(chunk, vegetation);
     }
   }
@@ -66,5 +64,21 @@ public class VegetationPlacer : MonoBehaviour
       }
     }
     return vegetationData.ToArray();
+  }
+}
+
+public struct VegetationInChunk {
+  public Coord tileCoord {get; private set;}
+  public Vector3 posOffset {get; private set;}
+  public int angle {get; private set;}
+  public bool placeWithRaycast {get; private set;}
+  public GameObject prefab {get; private set;}
+
+  public VegetationInChunk(Coord tileCoord, Vector3 posOffset, int angle, bool placeWithRaycast, GameObject prefab) {
+    this.tileCoord = tileCoord;
+    this.posOffset = posOffset;
+    this.angle = angle;
+    this.placeWithRaycast = placeWithRaycast;
+    this.prefab = prefab;
   }
 }

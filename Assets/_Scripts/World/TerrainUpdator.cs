@@ -72,7 +72,7 @@ public class TerrainUpdator : MonoBehaviour
   }
 
   void UpdateChunkActivity() {
-    // TODO: refactor further, and remove log calls
+    // TODO: refactor further
 
     LocalCoord playerCoord = worldBuilder.PositionToLocalCoord(playerPerspective.GetPlayerPosition());
     ResetChunksActivity();
@@ -90,11 +90,10 @@ public class TerrainUpdator : MonoBehaviour
         }
       }
     }
+
     Coord[] chunkActivityEntriesToDelete;
     ApplyChunkActivityUpdates(out chunkActivityEntriesToDelete);
     DeleteChunkActivityEntries(chunkActivityEntriesToDelete);
-
-    print("chunkActivity dictionary size is " + chunkActivityDict.Count);
   }
 
   void ApplyChunkActivityUpdates(out Coord[] entriesToDelete) {
@@ -110,9 +109,6 @@ public class TerrainUpdator : MonoBehaviour
         } else {
           ApplyChunkActivity(chunkCoord, chunkActivity);
         }
-
-      } else {
-        Debug.LogWarning("Tried to get chunkActivity that doesn't exist, should NOT happen");
       }
     }
 
