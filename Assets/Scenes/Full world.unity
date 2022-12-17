@@ -1383,7 +1383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxPropDistance
-      value: 160
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxRenderDistance
@@ -1395,11 +1395,11 @@ PrefabInstance:
       objectReference: {fileID: 7652744329506047957}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: playerMoveThreshold
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxWaterSimulatingDistance
-      value: 160
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
