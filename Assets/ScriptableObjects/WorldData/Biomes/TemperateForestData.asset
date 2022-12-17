@@ -32,4 +32,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 41377ab05311c454e80df652dda9dc46, type: 2}
   - {fileID: 11400000, guid: b5c06efafebcd1d45be688b7de0aeba0, type: 2}
   - {fileID: 11400000, guid: 099db1d15fadd104c9d6f6f665b7e1b0, type: 2}
-  vegetationDensity: 180
+  vegetationDensity: 160

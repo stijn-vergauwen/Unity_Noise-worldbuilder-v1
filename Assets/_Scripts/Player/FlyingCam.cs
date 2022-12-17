@@ -68,7 +68,7 @@ public class FlyingCam : MonoBehaviour
   void UpdateMovementTarget(Vector3 input) {
     if(input == Vector3.zero) return;
 
-    Vector3 newTarget = targetPosition + anchor.rotation * input * GetMoveSpeed();
+    Vector3 newTarget = targetPosition + (anchor.rotation * input * GetMoveSpeed() * Time.deltaTime);
     SetTargetPosition(newTarget);
   }
 

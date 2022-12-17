@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90df99a618ef50478b021d49063a8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldBuilder: {fileID: 0}
   player: {fileID: 8080971630426410902}
   terrainMask:
     serializedVersion: 2
@@ -251,14 +252,14 @@ MonoBehaviour:
   verticalPivot: {fileID: 5662864702870977056}
   cam: {fileID: 8484289721414480301}
   moveSpeed:
-    min: 0.05
-    max: 1.4
+    min: 7
+    max: 70
   turnSpeed: 1
   verticalStartAngle: 20
   zoomSpeed: 3
   zoomLimit:
     min: 5
-    max: 140
+    max: 100
   defaultHeight: 30
   moveSmoothness: 0.1
   zoomSmoothness: 0.2
