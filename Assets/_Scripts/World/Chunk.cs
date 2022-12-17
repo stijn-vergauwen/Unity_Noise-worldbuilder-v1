@@ -134,7 +134,7 @@ public class Chunk : MonoBehaviour
       vegetationPropsHolder.gameObject.SetActive(isVisible);
       
       if(isVisible) {
-        hasVegetation = true; // TODO: TEST if this hasVegetation & the data works like this, idk if it does
+        hasVegetation = true;
       }
     }
   }
@@ -146,11 +146,11 @@ public class Chunk : MonoBehaviour
   }
 
   public void ToggleWaterSimulation(bool simulate) {
-    if(hasWaterLayer) {
+    if(hasWaterLayer && simulateChunkWater != simulate) {
       simulateChunkWater = simulate;
 
       if(!simulate) {
-        // TODO: Reset water vertices to y = 0
+        ResetWaterVertices();
       }
     }
   }
@@ -170,5 +170,13 @@ public class Chunk : MonoBehaviour
 
   public void UpdateWaterVertices(Vector3[] newVertices) {
     waterLayerMeshFilter.mesh.vertices = newVertices;
+  }
+
+  void ResetWaterVertices() {
+    Vector3[] vertices = GetWaterVertices();
+    for(int i = 0; i < vertices.Length; i++) {
+        vertices[i].y = 0;
+    }
+    UpdateWaterVertices(vertices);
   }
 }
