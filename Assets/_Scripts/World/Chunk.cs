@@ -165,7 +165,7 @@ public class Chunk : MonoBehaviour
   // water updates
 
   public Vector3[] GetWaterVertices() {
-    return waterLayerMeshFilter.mesh.vertices; // TODO: this allocates garbage every frame, use GetVertices() if you want to optimize
+    return waterLayerMeshFilter.mesh.vertices;
   }
 
   public void UpdateWaterVertices(Vector3[] newVertices) {
@@ -175,7 +175,7 @@ public class Chunk : MonoBehaviour
   void ResetWaterVertices() {
     Vector3[] vertices = GetWaterVertices();
     for(int i = 0; i < vertices.Length; i++) {
-        vertices[i].y = 0;
+      vertices[i].y = 0;
     }
     UpdateWaterVertices(vertices);
   }

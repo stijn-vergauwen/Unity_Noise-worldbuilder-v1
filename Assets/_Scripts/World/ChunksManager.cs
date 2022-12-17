@@ -126,7 +126,7 @@ public class ChunksManager : MonoBehaviour
   }
 
   public void TryCreateChunkWaterLayer(Chunk chunk) {
-    if(waterLayer.CheckIfWaterInChunk(chunk.biomeMap)) {
+    if(worldBuilder.UseWaterLayer() && waterLayer.CheckIfWaterInChunk(chunk.biomeMap)) {
       MeshFilter chunkWaterLayer = waterLayer.CreateChunkWaterLayer(chunk);
       chunk.SetWaterLayer(chunkWaterLayer);
     }

@@ -57,30 +57,33 @@ public class WorldBuilder : MonoBehaviour
   }
 
   void GenerateWorld() {
-    // this method became very messy, too many workaround solutions for making the chunks
-    // so first i need to make the creation and toggling of chunk data way more modular and easy to work with.
+    List<Chunk> chunks = new List<Chunk>();
 
+    // generate all chunks, the -size + 1 is to go the same amount in positive & negative directions
+    for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
+      for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
+        Coord chunkCoord = new Coord(x, y);
+        Chunk newChunk = SetupNewChunk(chunkCoord);
 
-    // // generate all chunks, the -size + 1 is to go the same amount in positive & negative directions
-    // for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
-    //   for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
-    //     SetupNewChunk(new Coord(x, y));
-    //   }
-    // }
-    // chunksManager.RaiseOnVisibleChunksUpdate();
-    // chunksManager.DisplayMap();
+        chunksManager.AddChunk(chunkCoord, newChunk);
+        chunksManager.AddActiveChunk(newChunk);
+        chunks.Add(newChunk);
+      }
+    }
 
-    // for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
-    //   for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
-    //     Chunk chunk;
-    //     if(chunksManager.TryGetChunkByCoord(new Coord(x, y), out chunk)) {
-    //       chunk.SetChunkActive(chunk.hasBiomeTexture);
-    //       if(SpawnVegetation) {
-    //         chunk.SetVegetationActive(chunk.hasBiomeTexture);
-    //       }
-    //     }
-    //   }
-    // }
+    foreach(Chunk chunk in chunks) {
+      if(IsAtWorldEdge(chunk.chunkCoord)) continue;
+      chunksManager.ActivateChunk(chunk);
+
+      if(spawnVegetation) {
+        chunksManager.ToggleChunkVegetation(chunk, true);
+      }
+      chunksManager.ToggleChunkWaterLayer(chunk, true);
+    }
+  }
+
+  bool IsAtWorldEdge(Coord chunkCoord) {
+    return Mathf.Abs(chunkCoord.x) == worldSettings.worldSize - 1 || Mathf.Abs(chunkCoord.y) == worldSettings.worldSize - 1;
   }
 
   public Chunk SetupNewChunk(Coord chunkCoord) {
@@ -98,10 +101,6 @@ public class WorldBuilder : MonoBehaviour
 
     newChunk.DrawMap(mapToDraw);
 
-    if(!endlessTerrain) {
-      // TODO: after the new system of chunk data visibility, rework these methods in worldBuilder
-      // newChunk.SetChunkActive(true);
-    }
     return newChunk;
   }
 
@@ -118,14 +117,6 @@ public class WorldBuilder : MonoBehaviour
 
     return newChunk;
   }
-
-  // void ClearWorld() {
-  //   int childCount = chunkHolder.childCount;
-  //   for(int i = 0; i < childCount; i++) {
-  //     Destroy(chunkHolder.GetChild(i).gameObject);
-  //   }
-  //   chunksManager.ClearChunks();
-  // }
 
   // Position & Coord utility
 
@@ -216,16 +207,9 @@ public class WorldBuilder : MonoBehaviour
     );
   }
 
-
-
-  // delete and rebuild world when R key is pressed
-  // void Update() {
-  //   if(Input.GetKeyDown(KeyCode.R)) {
-  //     ClearWorld();
-  //     GenerateWorld();
-  //   }
-  // }
-
+  public bool UseWaterLayer() {
+    return buildMode == BuildMode.OpenWorld;
+  }
 }
 
 public enum MapToDraw {Biome, Height, Temperature, Humidity}

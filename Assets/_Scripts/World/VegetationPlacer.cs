@@ -27,7 +27,7 @@ public class VegetationPlacer : MonoBehaviour
   void PlaceVegetationInChunk(Chunk chunk, VegetationInChunk vegetation) {
     Vector3 propPosition = worldBuilder.CoordToPosition(chunk.chunkCoord, vegetation.tileCoord) + vegetation.posOffset;
 
-    if(vegetation.placeWithRaycast) {
+    if(vegetation.placeWithRaycast) { // TODO: props are placing inside the ground again, find out what causes this and fix it
       RaycastHit hit;
       Vector3 raisedPosition = propPosition + Vector3.up;
       float rayDistance = 2;

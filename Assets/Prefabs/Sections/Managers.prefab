@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 4019767508905979489}
+  chunksManager: {fileID: 0}
   waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
   simulateWater: 1
   waterLodLevel: 2
@@ -185,8 +186,9 @@ MonoBehaviour:
   worldBuilder: {fileID: 4019767508905979489}
   playerPerspective: {fileID: 0}
   playerMoveThreshold: 10
-  chunkMaxTerrainDistance: 300
-  chunkMaxPropDistance: 100
+  maxRenderDistance: 0
+  maxPropDistance: 0
+  maxWaterSimulatingDistance: 0
 --- !u!1 &4019767508905979491
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,8 +238,8 @@ MonoBehaviour:
   chunkHolder: {fileID: 0}
   worldSettings:
     tileSize: 1
-    chunkSize: 20
-    worldSize: 3
+    chunkSize: 30
+    worldSize: 8
     heightMap:
       seed: 47
       offset: {x: 0, y: 0}

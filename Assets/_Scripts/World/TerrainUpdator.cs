@@ -72,8 +72,6 @@ public class TerrainUpdator : MonoBehaviour
   }
 
   void UpdateChunkActivity() {
-    // TODO: refactor further
-
     LocalCoord playerCoord = worldBuilder.PositionToLocalCoord(playerPerspective.GetPlayerPosition());
     ResetChunksActivity();
 
@@ -163,7 +161,6 @@ public class TerrainUpdator : MonoBehaviour
   }
 
   class ChunkActivity {
-    // TODO: either remove prevActive as i don't use it, OR change name to ChunkVisibility & store visibility state for terrain, vegetation, and water separately
     public bool prevActive;
     public bool newActive;
 
