@@ -90,9 +90,4 @@ public class PlayerPerspective : MonoBehaviour
   public Vector3 GetPlayerPosition() {
     return playerPosition;
   }
-
-  public Vector2 GetFlatPlayerPosition() {
-    return new Vector2(playerPosition.x, playerPosition.z);
-  }
-
 }

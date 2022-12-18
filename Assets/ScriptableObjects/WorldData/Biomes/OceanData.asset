@@ -25,5 +25,5 @@ MonoBehaviour:
     min: 0
     max: 1
   biomePriority: 30
-  allowedVegitation: []
-  vegitationDensity: 100
+  allowedVegetation: []
+  vegetationDensity: 0

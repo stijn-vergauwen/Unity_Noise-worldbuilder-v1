@@ -335,7 +335,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412780552}
   m_LocalRotation: {x: 0.32498384, y: 0.35822624, z: -0.13461271, w: 0.86483467}
-  m_LocalPosition: {x: -10, y: 24, z: -10}
+  m_LocalPosition: {x: -13, y: 24, z: -13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -696,6 +696,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1312813045}
     m_Modifications:
+    - target: {fileID: 2481685745118988684, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: chunksManager
+      value: 
+      objectReference: {fileID: 968382319}
     - target: {fileID: 4019767507606115754, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: timeScale
       value: 0
@@ -793,6 +797,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 866902547}
     - target: {fileID: 4019767508905979489, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: endlessTerrain
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019767508905979489, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: worldSettings.worldSize
       value: 2
       objectReference: {fileID: 0}
@@ -823,6 +831,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4019767508707459790, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
   m_PrefabInstance: {fileID: 968382317}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &968382319 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4019767508876905273, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+  m_PrefabInstance: {fileID: 968382317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73040d1dda1f65945bc5ca76ce84e49e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1040071655
 GameObject:
   m_ObjectHideFlags: 0
