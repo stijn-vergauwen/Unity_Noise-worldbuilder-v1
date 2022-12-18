@@ -13,8 +13,14 @@ public class WorldBuilder : MonoBehaviour
   [Header("Settings")]
   [SerializeField] WorldSettings worldSettings;
 
-  // TODO: move endlessTerrain & mapToDraw back in this class, and move spawnVegitation out of worldSettings.
-  // keep worldsettings only for how things generate, underneath new header put selection options.
+  [Header("Generate settings")]
+  [SerializeField] bool randomizeNoiseSeeds = false;
+  [SerializeField, Range(0, 5)] int biomeTransitionSmoothness;
+
+  public bool spawnVegetation;
+  public bool endlessTerrain;
+
+  public MapToDraw mapToDraw;
   [SerializeField] BuildMode buildMode;
 
   // ChunkSize is correct for coordinates, ChunkMapSize is correct for dataMap & mesh size
@@ -24,58 +30,67 @@ public class WorldBuilder : MonoBehaviour
   public float Tilesize => worldSettings.tileSize;
 
   public BiomeSetSO BiomeSet => worldSettings.biomeSet;
-  public bool SpawnVegitation => worldSettings.spawnVegitation;
 
-  void Start() {
-    if(!chunksManager.endlessTerrain) {
-      GenerateWorld();
+  public int BiomeTransitionSmoothness => biomeTransitionSmoothness;
+
+  void Awake() {
+    if(randomizeNoiseSeeds) {
+      RandomizeSeedValues();
     }
   }
 
-  public void RandomizeSeedValues() {
+  void Start() {
+    if(endlessTerrain) {
+      chunksManager.StartUpdator();
+
+    } else {
+      GenerateWorld();
+    }
+
+    chunksManager.RaiseStartAreaLoaded();
+  }
+
+  void RandomizeSeedValues() {
     worldSettings.heightMap.seed = Random.Range(1, 1000);
     worldSettings.temperatureMap.seed = Random.Range(1, 1000);
     worldSettings.humidityMap.seed = Random.Range(1, 1000);
   }
 
   void GenerateWorld() {
+    List<Chunk> chunks = new List<Chunk>();
+
     // generate all chunks, the -size + 1 is to go the same amount in positive & negative directions
     for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
       for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
-        GenerateChunk(new Coord(x, y));
+        Coord chunkCoord = new Coord(x, y);
+        Chunk newChunk = SetupNewChunk(chunkCoord);
+
+        chunksManager.AddChunk(chunkCoord, newChunk);
+        chunksManager.AddActiveChunk(newChunk);
+        chunks.Add(newChunk);
       }
     }
-    chunksManager.RaiseOnVisibleChunksUpdate();
-    chunksManager.DisplayMap();
 
-    for (int y = -worldSettings.worldSize + 1; y < worldSettings.worldSize; y++) {
-      for (int x = -worldSettings.worldSize + 1; x < worldSettings.worldSize; x++) {
-        Chunk chunk;
-        if(chunksManager.TryGetChunkByCoord(new Coord(x, y), out chunk)) {
-          chunk.SetChunkActive(chunk.hasBiomeTexture);
-          if(SpawnVegitation) {
-            chunk.SetVegitationActive(chunk.hasBiomeTexture);
-          }
-        }
+    foreach(Chunk chunk in chunks) {
+      if(IsAtWorldEdge(chunk.chunkCoord)) continue;
+      chunksManager.ActivateChunk(chunk);
+
+      if(spawnVegetation) {
+        chunksManager.ToggleChunkVegetation(chunk, true);
       }
+      chunksManager.ToggleChunkWaterLayer(chunk, true);
     }
   }
 
-  public Chunk GenerateChunk(Coord chunkCoord) {
-    Vector2 chunkPos = ChunkCoordToOffset(chunkCoord) * Tilesize;
+  bool IsAtWorldEdge(Coord chunkCoord) {
+    return Mathf.Abs(chunkCoord.x) == worldSettings.worldSize - 1 || Mathf.Abs(chunkCoord.y) == worldSettings.worldSize - 1;
+  }
 
-    Chunk newChunk = Instantiate(chunkPrefab, chunkHolder);
-    newChunk.transform.position = new Vector3(chunkPos.x, 0, chunkPos.y);
+  public Chunk SetupNewChunk(Coord chunkCoord) {
+    Vector2 chunkOffset = ChunkCoordToOffset(chunkCoord);
+    Vector3 chunkPosition = new Vector3(chunkOffset.x, 0, chunkOffset.y) * Tilesize;
 
-    chunksManager.AddChunk(chunkCoord, newChunk);
-
-    newChunk.Init(
-      chunksManager,
-      chunkCoord,
-      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.heightMap, ChunkCoordToOffset(chunkCoord)),
-      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.temperatureMap, ChunkCoordToOffset(chunkCoord)),
-      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.humidityMap, ChunkCoordToOffset(chunkCoord))
-    );
+    Chunk newChunk = CreateChunk(chunkCoord, chunkOffset, chunkPosition);
 
     if(buildMode == BuildMode.Map) {
       newChunk.CreateFlatMesh(ChunkMapSize, Tilesize);
@@ -84,18 +99,23 @@ public class WorldBuilder : MonoBehaviour
       newChunk.CreateMesh(Tilesize, worldSettings.heightMultiplier, worldSettings.meshHeightCurve);
     }
 
-    if(!chunksManager.endlessTerrain) {
-      newChunk.SetChunkActive(true);
-    }
+    newChunk.DrawMap(mapToDraw);
+
     return newChunk;
   }
 
-  void ClearWorld() {
-    int childCount = chunkHolder.childCount;
-    for(int i = 0; i < childCount; i++) {
-      Destroy(chunkHolder.GetChild(i).gameObject);
-    }
-    chunksManager.ClearChunks();
+  Chunk CreateChunk(Coord chunkCoord, Vector2 chunkOffset, Vector3 chunkPosition) {
+    Chunk newChunk = Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, chunkHolder);
+
+    newChunk.Init(
+      chunksManager,
+      chunkCoord,
+      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.heightMap, chunkOffset),
+      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.temperatureMap, chunkOffset),
+      Noise.GenerateNoiseMap(ChunkMapSize, worldSettings.humidityMap, chunkOffset)
+    );
+
+    return newChunk;
   }
 
   // Position & Coord utility
@@ -180,14 +200,16 @@ public class WorldBuilder : MonoBehaviour
     return Mathf.Min(heightsOfCorners);
   }
 
+  public Coord GetHalfChunkSize() {
+    return new Coord(
+      Mathf.RoundToInt(ChunkSize * .5f),
+      Mathf.RoundToInt(ChunkSize * .5f)
+    );
+  }
 
-
-  // delete and rebuild world when R key is pressed
-  // void Update() {
-  //   if(Input.GetKeyDown(KeyCode.R)) {
-  //     ClearWorld();
-  //     GenerateWorld();
-  //   }
-  // }
-
+  public bool UseWaterLayer() {
+    return buildMode == BuildMode.OpenWorld;
+  }
 }
+
+public enum MapToDraw {Biome, Height, Temperature, Humidity}

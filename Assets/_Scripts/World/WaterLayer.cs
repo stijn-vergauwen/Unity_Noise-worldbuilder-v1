@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaterLayer : MonoBehaviour
 {
   [SerializeField] WorldBuilder worldBuilder;
+  [SerializeField] ChunksManager chunksManager;
   [SerializeField] MeshFilter waterLayerPrefab;
 
   [Header("Settings")]
@@ -15,10 +16,20 @@ public class WaterLayer : MonoBehaviour
   [SerializeField, Min(.001f)] float noiseScale = .09f;
   [SerializeField] float timeScale = .3f;
 
-  public bool SimulateWater => simulateWater;
-
   float xOffset;
   float yOffset;
+
+  public bool CheckIfWaterInChunk(int[,] biomeMap) {
+    int mapSize = biomeMap.GetLength(0);
+    int oceanBiomeId = worldBuilder.BiomeSet.FindBiome("Ocean").biomeId;
+
+    for(int y = 0; y < mapSize; y++) {
+      for(int x = 0; x < mapSize; x++) {
+        if(biomeMap[x,y] == oceanBiomeId) return true;
+      }
+    }
+    return false;
+  }
 
   public MeshFilter CreateChunkWaterLayer(Chunk chunk) {
     Vector3 waterLayerPosition = new Vector3(chunk.transform.position.x, seaLevel, chunk.transform.position.z);
@@ -42,13 +53,34 @@ public class WaterLayer : MonoBehaviour
     return Mathf.PerlinNoise(sampleX, sampleY) - .5f;
   }
 
+  // Updating water 
+
   void Update() {
-    UpdateOffset();
+    if(simulateWater) {
+      UpdateOffset();
+      UpdateWater();
+    }
   }
 
   void UpdateOffset() {
     float offsetChange = Time.deltaTime * timeScale;
     xOffset += offsetChange;
     yOffset += offsetChange;
+  }
+
+  void UpdateWater() {
+    Chunk[] activeChunks = chunksManager.GetActiveChunks();
+    foreach(Chunk chunk in activeChunks) {
+      UpdateChunkWaterLayer(chunk);
+    }
+  }
+
+  void UpdateChunkWaterLayer(Chunk chunk) {
+    if(chunk.simulateChunkWater) {
+      chunk.UpdateWaterVertices(CalculateNewMeshVertices(
+        chunk.GetWaterVertices(),
+        chunk.chunkCoord
+      ));
+    }
   }
 }

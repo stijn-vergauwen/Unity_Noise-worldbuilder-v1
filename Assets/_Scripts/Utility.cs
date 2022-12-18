@@ -89,9 +89,6 @@ public struct WorldSettings {
   [Header("Biomes")]
   public BiomeSetSO biomeSet;
 
-  [Header("Vegitation")]
-  public bool spawnVegitation;
-
   [Header("Ground mesh")]
   public float heightMultiplier;
   public AnimationCurve meshHeightCurve;

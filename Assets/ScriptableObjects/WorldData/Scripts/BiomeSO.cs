@@ -17,9 +17,9 @@ public class BiomeSO : ScriptableObject
   [Header("how likely this biome spawns")]
   [Range(0, 100)] public int biomePriority = 100;
 
-  [Header("Vegitation props")]
-  public VegitationSetSO[] allowedVegitation;
-  [Range(0, 1000)] public int vegitationDensity = 100;
+  [Header("Vegetation props")]
+  public VegetationSetSO[] allowedVegetation;
+  [Range(0, 1000)] public int vegetationDensity = 100;
 
   // calculates how ideal the given conditions are for this biome.
   public int GetConditionPreference(float givenHeight, float givenTemperature, float givenHumidity) {
@@ -37,13 +37,13 @@ public class BiomeSO : ScriptableObject
     return preference;
   }
 
-  public bool HasAllowedVegitation() {
-    return allowedVegitation.Length > 0;
+  public bool HasAllowedVegetation() {
+    return allowedVegetation.Length > 0;
   }
 
-  public GameObject GetRandomVegitation(out bool placeWithRaycast) {
-    VegitationSetSO vegitationSet = allowedVegitation[Random.Range(0, allowedVegitation.Length)];
-    placeWithRaycast = vegitationSet.CheckNeedsRaycast();
-    return vegitationSet.GetRandomProp();
+  public GameObject GetRandomVegetation(out bool placeWithRaycast) {
+    VegetationSetSO vegetationSet = allowedVegetation[Random.Range(0, allowedVegetation.Length)];
+    placeWithRaycast = vegetationSet.CheckNeedsRaycast();
+    return vegetationSet.GetRandomProp();
   }
 }

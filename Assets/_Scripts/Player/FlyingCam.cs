@@ -54,12 +54,21 @@ public class FlyingCam : MonoBehaviour
     UpdateCameraMovement();
   }
 
+  void UpdateCameraMovement() {
+    UpdateMovementTarget(input.movementInput);
+    UpdateRotation(input.turnInput);
+    UpdateZoomTarget(-Input.mouseScrollDelta.y);
+
+    MoveAnchor();
+    ZoomCamera();
+  }
+
   // Handling input
 
   void UpdateMovementTarget(Vector3 input) {
     if(input == Vector3.zero) return;
 
-    Vector3 newTarget = targetPosition + anchor.rotation * input * GetMoveSpeed();
+    Vector3 newTarget = targetPosition + (anchor.rotation * input * GetMoveSpeed() * Time.deltaTime);
     SetTargetPosition(newTarget);
   }
 
@@ -80,15 +89,6 @@ public class FlyingCam : MonoBehaviour
   }
 
   // Updating values
-
-  void UpdateCameraMovement() {
-    UpdateMovementTarget(input.movementInput);
-    UpdateRotation(input.turnInput);
-    UpdateZoomTarget(-Input.mouseScrollDelta.y);
-
-    MoveAnchor();
-    ZoomCamera();
-  }
 
   void MoveAnchor() {
     Vector3 newPosition = Vector3.SmoothDamp(anchor.position, CalculateHeightAdjustedTargetPosition(targetPosition), ref moveVelocity, moveSmoothness);
