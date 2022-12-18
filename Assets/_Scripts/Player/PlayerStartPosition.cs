@@ -19,11 +19,11 @@ public class PlayerStartPosition : MonoBehaviour
   }
 
   void SetStartPosition() {
-    Vector3 startPosition = Vector3.up * (GetGroundHeight() + offsetAboveGround);
+    Vector3 startPosition = GetGroundHeight() + Vector3.up * offsetAboveGround;
     player.StartPlayer(startPosition);
   }
 
-  float GetGroundHeight() {
-    return worldBuilder.CoordToPosition(new Coord(0, 0)).y;
+  Vector3 GetGroundHeight() {
+    return worldBuilder.CoordToPosition(new Coord(0, 0));
   }
 }
