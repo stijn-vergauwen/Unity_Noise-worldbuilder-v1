@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
-  [SerializeField] Transform vegitationPropsHolder;
+  [SerializeField] Transform vegetationPropsHolder;
   [SerializeField] GameObject meshHolder;
   
-  public Transform PropHolder => vegitationPropsHolder;
+  public Transform PropHolder => vegetationPropsHolder;
 
   public Coord chunkCoord {get; private set;}
 
@@ -17,11 +17,12 @@ public class Chunk : MonoBehaviour
   float[,] humidityMap;
   public int[,] biomeMap {get; private set;}
 
-  public bool hasVegitation {get; private set;} = false;
-  public VegitationInChunk[] vegitationInChunk {get; private set;}
+  public bool hasVegetation {get; private set;} = false;
+  public bool hasVegetationData {get; private set;} = false;
+  public VegetationInChunk[] vegetationInChunk {get; private set;}
 
-  Texture2D biomeTexture;
   public bool hasBiomeTexture {get; private set;} = false;
+  Texture2D biomeTexture;
 
   ChunksManager manager;
   MeshFilter meshFilter;
@@ -30,7 +31,8 @@ public class Chunk : MonoBehaviour
 
   // water layer mesh
   public bool hasWaterLayer {get; private set;} = false;
-  public MeshFilter waterLayerMeshFilter {get; private set;} // TODO: make sure water layers get disabled when out of range
+  public bool simulateChunkWater {get; private set;} = false;
+  MeshFilter waterLayerMeshFilter;
 
   public void Init(ChunksManager chunksManager, Coord chunkCoord, float[,] heightMap, float[,] temperatureMap, float[,] humidityMap) {
     manager = chunksManager;
@@ -45,7 +47,7 @@ public class Chunk : MonoBehaviour
 
     meshRenderer.material.SetFloat("_Glossiness", 0);
     CreateBiomeMap();
-    manager.CheckIfWaterInChunk(this);
+    manager.TryCreateChunkWaterLayer(this);
   }
 
   // accessors
@@ -75,103 +77,106 @@ public class Chunk : MonoBehaviour
     meshCollider.sharedMesh = mesh;
   }
 
-  public void OnDrawMap(ChunksManager.MapToDraw mapToDraw) {
-    if(mapToDraw == ChunksManager.MapToDraw.Biome) {
+  public void DrawMap(MapToDraw mapToDraw) {
+    if(mapToDraw == MapToDraw.Biome) {
       if(hasBiomeTexture) {
         meshRenderer.material.mainTexture = biomeTexture;
       }
 
-    } else if(mapToDraw == ChunksManager.MapToDraw.Height) {
+    } else if(mapToDraw == MapToDraw.Height) {
       meshRenderer.material.mainTexture = TextureGenerator.GenerateFromNoiseMap(heightMap);
 
-    } else if(mapToDraw == ChunksManager.MapToDraw.Temperature) {
+    } else if(mapToDraw == MapToDraw.Temperature) {
       meshRenderer.material.mainTexture = TextureGenerator.GenerateFromNoiseMap(temperatureMap, Color.blue, Color.red);
 
-    } else if(mapToDraw == ChunksManager.MapToDraw.Humidity) {
+    } else if(mapToDraw == MapToDraw.Humidity) {
       meshRenderer.material.mainTexture = TextureGenerator.GenerateFromNoiseMap(humidityMap, Color.white, Color.blue);
     }
   }
 
-  public void SetVegitation(VegitationInChunk[] vegitation) {
-    vegitationInChunk = vegitation;
-    hasVegitation = true;
+  public void SetTerrain(Color[] groundColorArray) {
+    biomeTexture = TextureGenerator.GenerateFromColorArray(
+      biomeMap.GetLength(0),
+      groundColorArray
+    );
+    // maybe set meshRenderer to this texture
+    hasBiomeTexture = true;
+  }
+
+  public void SetVegetation(VegetationInChunk[] vegetation) {
+    vegetationInChunk = vegetation;
+    hasVegetationData = true;
   }
 
   public void SetWaterLayer(MeshFilter meshFilter) {
-    hasWaterLayer = true;
     waterLayerMeshFilter = meshFilter;
-  }
-
-  // biome texture
-
-  void TryCreateBiomeTexture() {
-    if(manager.CheckIfChunkCanCreateTerrain(chunkCoord)) {
-      biomeTexture = TextureGenerator.GenerateFromColorArray(
-        biomeMap.GetLength(0),
-        manager.CreateAveragedChunkGroundColors(chunkCoord, biomeMap)
-      );
-      meshRenderer.material.mainTexture = biomeTexture;
-      hasBiomeTexture = true;
-    }
-  }
-
-  void CheckBiomeTexture(ChunksManager.MapToDraw mapToDraw) {
-    if(mapToDraw == ChunksManager.MapToDraw.Biome && !hasBiomeTexture) {
-      TryCreateBiomeTexture();
-    }
+    hasWaterLayer = true;
   }
 
   // chunk updates
-  public void SetChunkActive(bool value) {
-    if(meshHolder.activeSelf != value) {
-      meshHolder.SetActive(value);
-      if(hasWaterLayer) {
-        waterLayerMeshFilter.gameObject.SetActive(value);
-      }
 
-      if(value) {
-        manager.OnDrawMap += OnDrawMap;
-        manager.OnVisibleChunksUpdate += CheckBiomeTexture;
+  public void DeactivateChunk() {
+    ToggleTerrain(false);
+    ToggleVegetation(false);
+    ToggleWater(false);
+    simulateChunkWater = false;
+    DestroyVegetation();
+  }
 
-      } else {
-        manager.OnDrawMap -= OnDrawMap;
-        manager.OnVisibleChunksUpdate -= CheckBiomeTexture;
+  public void ToggleTerrain(bool isVisible) {
+    if(hasBiomeTexture && meshHolder.activeSelf != isVisible) {
+      meshHolder.SetActive(isVisible);
+    }
+  }
+
+  public void ToggleVegetation(bool isVisible) {
+    if(hasVegetationData && vegetationPropsHolder.gameObject.activeSelf != isVisible) {
+      vegetationPropsHolder.gameObject.SetActive(isVisible);
+      
+      if(isVisible) {
+        hasVegetation = true;
       }
     }
   }
 
-  public void SetVegitationActive(bool value) {
-    if(vegitationPropsHolder.gameObject.activeSelf != value) {
-      if(value && !hasVegitation) {
-        manager.CreateVegitationForChunk(this);
+  public void ToggleWater(bool isVisible) {
+    if(hasWaterLayer && waterLayerMeshFilter.gameObject.activeSelf != isVisible) {
+      waterLayerMeshFilter.gameObject.SetActive(isVisible);
+    }
+  }
+
+  public void ToggleWaterSimulation(bool simulate) {
+    if(hasWaterLayer && simulateChunkWater != simulate) {
+      simulateChunkWater = simulate;
+
+      if(!simulate) {
+        ResetWaterVertices();
       }
-      vegitationPropsHolder.gameObject.SetActive(value);
     }
   }
 
-
-  // THIS IS REALLY TEMPORARY THOUGH
-  // TODO: remove this update function, this should move to ChunksManager, but ChunksManager & WorldBuilder need some reworks & refactoring!
-
-  void Update() {
-    if(hasWaterLayer) {
-      manager.UpdateChunkWaterLayer(waterLayerMeshFilter, chunkCoord);
+  void DestroyVegetation() {
+    foreach(Transform prop in vegetationPropsHolder) {
+      Destroy(prop.gameObject);
     }
+    hasVegetation = false;
   }
-}
 
-public struct VegitationInChunk {
-  public Coord tileCoord {get; private set;}
-  public Vector3 posOffset {get; private set;}
-  public int angle {get; private set;}
-  public bool placeWithRaycast {get; private set;}
-  public GameObject prefab {get; private set;}
+  // water updates
 
-  public VegitationInChunk(Coord tileCoord, Vector3 posOffset, int angle, bool placeWithRaycast, GameObject prefab) {
-    this.tileCoord = tileCoord;
-    this.posOffset = posOffset;
-    this.angle = angle;
-    this.placeWithRaycast = placeWithRaycast;
-    this.prefab = prefab;
+  public Vector3[] GetWaterVertices() {
+    return waterLayerMeshFilter.mesh.vertices;
+  }
+
+  public void UpdateWaterVertices(Vector3[] newVertices) {
+    waterLayerMeshFilter.mesh.vertices = newVertices;
+  }
+
+  void ResetWaterVertices() {
+    Vector3[] vertices = GetWaterVertices();
+    for(int i = 0; i < vertices.Length; i++) {
+      vertices[i].y = 0;
+    }
+    UpdateWaterVertices(vertices);
   }
 }

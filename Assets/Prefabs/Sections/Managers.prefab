@@ -1,57 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4019767507606115764
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4019767507606115755}
-  - component: {fileID: 4019767507606115754}
-  m_Layer: 0
-  m_Name: WaterLayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4019767507606115755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019767507606115764}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4019767508707459790}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4019767507606115754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019767507606115764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac9ded1398f792e48bee905d90fc3c8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldBuilder: {fileID: 4019767508905979489}
-  waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
-  simulateWater: 1
-  waterLodLevel: 2
-  seaLevel: 9.1
-  waveHeight: 0.6
-  noiseScale: 5.48
-  timeScale: 0.15
 --- !u!1 &4019767508707459791
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +31,6 @@ Transform:
   - {fileID: 4019767508905979488}
   - {fileID: 4019767508876905272}
   - {fileID: 4019767508719595651}
-  - {fileID: 4019767507606115755}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -97,8 +44,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4019767508719595651}
   - component: {fileID: 4019767508719595660}
+  - component: {fileID: 2481685745118988684}
+  - component: {fileID: 766216173750234393}
   m_Layer: 0
-  m_Name: VegitationPlacer
+  m_Name: DataCalculators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,6 +85,41 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   maxOffset: 0.5
+--- !u!114 &2481685745118988684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508719595661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac9ded1398f792e48bee905d90fc3c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldBuilder: {fileID: 4019767508905979489}
+  chunksManager: {fileID: 0}
+  waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
+  simulateWater: 1
+  waterLodLevel: 2
+  seaLevel: 9.1
+  waveHeight: 0.6
+  noiseScale: 5.48
+  timeScale: 0.15
+--- !u!114 &766216173750234393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508719595661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6c4539cbaaa66f42ab1f5d7846ab596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunksManager: {fileID: 4019767508876905273}
+  worldBuilder: {fileID: 4019767508905979489}
 --- !u!1 &4019767508876905274
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4019767508876905272}
   - component: {fileID: 4019767508876905273}
+  - component: {fileID: 8618939874773762861}
   m_Layer: 0
   m_Name: ChunksManager
   m_TagString: Untagged
@@ -181,17 +166,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 4019767508905979489}
-  vegitationPlacer: {fileID: 4019767508719595660}
-  waterLayer: {fileID: 4019767507606115754}
-  mapToDraw: 1
-  endlessTerrain: 1
-  randomizeNoiseSeeds: 1
-  biomeTransitionSmoothness: 2
+  vegetationPlacer: {fileID: 4019767508719595660}
+  waterLayer: {fileID: 2481685745118988684}
+  colorCalculator: {fileID: 766216173750234393}
+  terrainUpdator: {fileID: 8618939874773762861}
+--- !u!114 &8618939874773762861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019767508876905274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d71655e5e6c7da468d4401348cdd9eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunksManager: {fileID: 4019767508876905273}
+  worldBuilder: {fileID: 4019767508905979489}
   playerPerspective: {fileID: 0}
   playerMoveThreshold: 10
-  chunkMaxTerrainDistance: 240
-  chunkMaxPropDistance: 140
-  chunkGenerateRadius: 15
+  maxRenderDistance: 0
+  maxPropDistance: 0
+  maxWaterSimulatingDistance: 0
 --- !u!1 &4019767508905979491
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,8 +238,8 @@ MonoBehaviour:
   chunkHolder: {fileID: 0}
   worldSettings:
     tileSize: 1
-    chunkSize: 20
-    worldSize: 3
+    chunkSize: 30
+    worldSize: 8
     heightMap:
       seed: 47
       offset: {x: 0, y: 0}
@@ -265,7 +262,6 @@ MonoBehaviour:
       persistance: 0.45
       lacunarity: 2.6
     biomeSet: {fileID: 11400000, guid: 0272f62450e94724b9c0cf43d0f7240d, type: 2}
-    spawnVegitation: 1
     heightMultiplier: 70
     meshHeightCurve:
       serializedVersion: 2
@@ -289,13 +285,13 @@ MonoBehaviour:
         inWeight: 0.19093443
         outWeight: 0.35641
       - serializedVersion: 3
-        time: 0.6445695
-        value: 0.29376507
-        inSlope: 1.164418
-        outSlope: 1.164418
+        time: 0.646248
+        value: 0.30853558
+        inSlope: 1.5044917
+        outSlope: 1.5044917
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.24511114
+        inWeight: 0.24961859
         outWeight: 0.18063165
       - serializedVersion: 3
         time: 1.0175242
@@ -309,4 +305,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  randomizeNoiseSeeds: 0
+  biomeTransitionSmoothness: 2
+  spawnVegetation: 1
+  endlessTerrain: 1
+  mapToDraw: 0
   buildMode: 1

@@ -5,50 +5,20 @@ using UnityEngine;
 
 public class ChunksManager : MonoBehaviour
 {
-  public enum MapToDraw {Height, Biome, Temperature, Humidity}
-
   [SerializeField] WorldBuilder worldBuilder;
-  [SerializeField] VegitationPlacer vegitationPlacer;
+  [SerializeField] VegetationPlacer vegetationPlacer;
   [SerializeField] WaterLayer waterLayer;
-  [SerializeField] MapToDraw mapToDraw;
-  public bool endlessTerrain;
-  [SerializeField] bool randomizeNoiseSeeds = false;
-  [SerializeField, Range(0, 5)] int biomeTransitionSmoothness;
-
-  [Header("Player movement based chunk updating")]
-  [SerializeField] PlayerPerspective playerPerspective;
-  [SerializeField] int playerMoveThreshold;
-  [SerializeField] int chunkMaxTerrainDistance;
-  [SerializeField] int chunkMaxPropDistance;
-  [SerializeField, Min(1)] int chunkGenerateRadius; // radius at which new chunks get created & setup
-
-  LocalCoord playerCoord;
-  Vector2 lastUpdatePosition;
+  [SerializeField] GroundColorCalculator colorCalculator;
+  [SerializeField] TerrainUpdator terrainUpdator;
 
   Dictionary<Coord, Chunk> chunks = new Dictionary<Coord, Chunk>();
-
-  // TODO: make a list<> holding all current active chunks, update this each time UpdateVisibleChunks is called, saves checks & scales better than chunkGenerateRadius
-  // also need to use that list to update water layers of active chunks with water
-
-  // TODO: this class is becoming a ChunkManager+allthisotherstuff class, splitting and refactoring needed
-
-
-  public Action<MapToDraw> OnDrawMap;
-  public Action<MapToDraw> OnVisibleChunksUpdate;
+  List<Chunk> activeChunks = new List<Chunk>();
 
   public static Action OnStartareaLoaded;
 
   // setup
-  void Start() {
-    if(randomizeNoiseSeeds) {
-      worldBuilder.RandomizeSeedValues();
-    }
-
-    if(endlessTerrain) {
-      UpdateVisibleChunks();
-      StartCoroutine(CheckChunkUpdateRoutine());
-    }
-    OnStartareaLoaded?.Invoke();
+  public void StartUpdator() {
+    terrainUpdator.StartUpdator();
   }
 
   void Update() {
@@ -69,116 +39,97 @@ public class ChunksManager : MonoBehaviour
     return chunks.TryGetValue(chunkCoord, out foundChunk);
   }
 
-  Chunk GetOrCreateChunk(Coord chunkCoord) {
+  public Chunk GetOrCreateChunk(Coord chunkCoord) {
     Chunk chunk;
     if(!TryGetChunkByCoord(chunkCoord, out chunk)) {
-      chunk = worldBuilder.GenerateChunk(chunkCoord);
-      chunk.OnDrawMap(mapToDraw);
+      chunk = worldBuilder.SetupNewChunk(chunkCoord);
+      AddChunk(chunkCoord, chunk);
     }
     return chunk;
   }
 
-  public void ClearChunks() {
+  void ClearChunks() {
     chunks.Clear();
   }
 
-  // updating chunks, should move to terrainUpdator
-
-  void UpdateVisibleChunks() {
-    for(int yOffset = -chunkGenerateRadius + 1; yOffset < chunkGenerateRadius; yOffset ++) {
-      for(int xOffset = -chunkGenerateRadius + 1; xOffset < chunkGenerateRadius; xOffset ++) {
-        Chunk chunk = GetOrCreateChunk(playerCoord.chunkCoord.AddOffset(xOffset, yOffset));
-        chunk.SetChunkActive(CheckChunkVisibility(chunk));
-        chunk.SetVegitationActive(CheckChunkPropVisibility(chunk));
-      }
-    }
-    RaiseOnVisibleChunksUpdate();
+  public Chunk[] GetActiveChunks() {
+    return activeChunks.ToArray();
   }
 
-  IEnumerator CheckChunkUpdateRoutine() {
-    while(true) {
-      if(GetDistanceToPlayer(lastUpdatePosition) > playerMoveThreshold) {
-        playerCoord = worldBuilder.PositionToLocalCoord(playerPerspective.GetPlayerPosition());
-        lastUpdatePosition = playerPerspective.GetFlatPlayerPosition();
-        UpdateVisibleChunks();
-      }
+  public void AddActiveChunk(Chunk chunk) {
+    activeChunks.Add(chunk);
+  }
 
-      yield return new WaitForSeconds(.05f);
+  public void RemoveActiveChunk(Chunk chunk) {
+    activeChunks.Remove(chunk);
+  }
+
+  public void ClearActiveChunks() {
+    DeactivateAllActiveChunks();
+    activeChunks.Clear();
+  }
+
+  public void DeactivateAllActiveChunks() {
+    foreach(Chunk chunk in activeChunks) {
+      chunk.DeactivateChunk();
     }
   }
 
-  public void RaiseOnVisibleChunksUpdate() {
-    OnVisibleChunksUpdate?.Invoke(mapToDraw);
+  // chunk update related things
+
+  public void RaiseStartAreaLoaded() {
+    OnStartareaLoaded?.Invoke();
   }
 
-  // chunk visibility, should move to terrainUpdator
+  public void ActivateChunk(Chunk chunk) {
+    if(!chunk.hasBiomeTexture) {
+      if(!CheckIfChunkCanCreateTerrain(chunk.chunkCoord)) return;
 
-  public bool CheckChunkVisibility(Chunk chunk) {
-    return GetDistanceToPlayer(chunk.transform.position) < chunkMaxTerrainDistance;
-  }
+      chunk.SetTerrain(colorCalculator.CalculateGroundColors(
+        chunk.chunkCoord,
+        chunk.biomeMap
+      ));
 
-  public bool CheckChunkPropVisibility(Chunk chunk) {
-    return (
-      worldBuilder.SpawnVegitation &&
-      GetDistanceToPlayer(chunk.transform.position) < chunkMaxPropDistance
-    );
-  }
-
-  // distance to player utility
-
-  float GetDistanceToPlayer(Vector2 point) {
-    return Vector2.Distance(point, playerPerspective.GetFlatPlayerPosition());
-  }
-
-  float GetDistanceToPlayer(Vector3 point) {
-    return GetDistanceToPlayer(new Vector2(point.x, point.z));
-  }
-
-  // chunk vegitation
-
-  public void CreateVegitationForChunk(Chunk chunk) {
-    vegitationPlacer.PlaceVegitationProps(chunk, worldBuilder.ChunkSize, worldBuilder.BiomeSet);
-  }
-
-  // accessor
-  
-  public BiomeSetSO GetBiomeSet() {
-    return worldBuilder.BiomeSet;
-  }
-
-  // water layer related
-
-  public void CheckIfWaterInChunk(Chunk chunk) {
-    int[,] biomeMap = chunk.biomeMap;
-    int mapSize = biomeMap.GetLength(0);
-    bool waterInChunk = false;
-    BiomeSetSO biomeSet = GetBiomeSet();
-
-    for(int y = 0; y < mapSize; y++) {
-      for(int x = 0; x < mapSize; x++) {
-        if(biomeSet.FindBiome(biomeMap[x,y]).biomeName == "Ocean") {
-          waterInChunk = true;
-          break;
-        }
-      }  
-      if(waterInChunk) break;
+      chunk.DrawMap(worldBuilder.mapToDraw);
     }
 
-    if(waterInChunk) {
+    chunk.ToggleTerrain(true);
+    chunk.ToggleWater(true);
+  }
+
+  public void ToggleChunkVegetation(Chunk chunk, bool value) {
+    if(value && !chunk.hasVegetation) {
+      CreateVegetationForChunk(chunk);
+    }
+
+    chunk.ToggleVegetation(value);
+  }
+
+  public void ToggleChunkWaterLayer(Chunk chunk, bool value) {
+    chunk.ToggleWaterSimulation(value);
+  }
+
+  public void DeactivateChunkAtCoord(Coord chunkCoord) {
+    Chunk chunk;
+    if(TryGetChunkByCoord(chunkCoord, out chunk)) {
+      chunk.DeactivateChunk();
+    }
+  }
+
+  // chunk data
+
+  void CreateVegetationForChunk(Chunk chunk) {
+    vegetationPlacer.PlaceVegetationProps(chunk, worldBuilder.ChunkSize, worldBuilder.BiomeSet);
+  }
+
+  public void TryCreateChunkWaterLayer(Chunk chunk) {
+    if(worldBuilder.UseWaterLayer() && waterLayer.CheckIfWaterInChunk(chunk.biomeMap)) {
       MeshFilter chunkWaterLayer = waterLayer.CreateChunkWaterLayer(chunk);
       chunk.SetWaterLayer(chunkWaterLayer);
     }
   }
 
-  public void UpdateChunkWaterLayer(MeshFilter waterMeshFilter, Coord chunkCoord) {
-    if(!waterLayer.SimulateWater) return;
-    Vector3[] updatedVertices = waterLayer.CalculateNewMeshVertices(waterMeshFilter.mesh.vertices, chunkCoord);
-    waterMeshFilter.mesh.vertices = updatedVertices;
-  }
-
-  // smoothing biome colors
-
-  public bool CheckIfChunkCanCreateTerrain(Coord chunkCoord) {
+  bool CheckIfChunkCanCreateTerrain(Coord chunkCoord) {
     return GetChunkNeighborCount(chunkCoord) == 8;
   }
 
@@ -193,68 +144,7 @@ public class ChunksManager : MonoBehaviour
     return neighborCount;
   }
 
-  public Color[] CreateAveragedChunkGroundColors(Coord chunkCoord, int[,] biomeMap) {
-    int size = biomeMap.GetLength(0);
-    BiomeSetSO biomeSet = GetBiomeSet();
-    Color[] colorArray = new Color[size * size];
-
-    for (int y = 0; y < size; y++) {
-      for (int x = 0; x < size; x++) {
-        LocalCoord localCoord = new LocalCoord(chunkCoord, new Coord(x, y));
-        colorArray[y * size + x] = GetAverageGroundColor(localCoord, biomeTransitionSmoothness, biomeMap, biomeSet);
-      }
-    }
-
-    return colorArray;
-  }
-
-  Color GetAverageGroundColor(LocalCoord localCoord, int searchRadius, int[,] biomeMap, BiomeSetSO biomeSet) {
-    int size = biomeMap.GetLength(0);
-    float totalR = 0;
-    float totalG = 0;
-    float totalB = 0;
-    int sampleCount = 0;
-    
-    for (int yOffset = -searchRadius; yOffset <= searchRadius; yOffset++) {
-      for (int xOffset = -searchRadius; xOffset <= searchRadius; xOffset++) {
-        Coord searchCoord = localCoord.tileCoord.AddOffset(xOffset, yOffset);
-        int biomeId;
-        // check if coord is within chunk, if in different chunk, get biome from other chunk
-        if(searchCoord.x >= 0 && searchCoord.x < size && searchCoord.y >= 0 && searchCoord.y < size) {
-          biomeId = biomeMap[searchCoord.x, searchCoord.y];
-
-        } else {
-          biomeId = GetBiomeIdInChunk(worldBuilder.LocalToWorldCoord(localCoord.chunkCoord, searchCoord));
-        }
-
-        Color sample = biomeSet.FindBiome(biomeId).groundColor;
-        totalR += sample.r;
-        totalG += sample.g;
-        totalB += sample.b;
-        sampleCount++;
-      }
-    }
-
-    return new Color(
-      totalR / sampleCount,
-      totalG / sampleCount,
-      totalB / sampleCount
-    );
-  }
-
-  int GetBiomeIdInChunk(Coord worldCoord) {
-    LocalCoord localCoord = worldBuilder.WorldToLocalCoord(worldCoord);
-    Chunk chunk;
-    int biomeId = 0;
-
-    if(TryGetChunkByCoord(localCoord.chunkCoord, out chunk)) {
-      biomeId = chunk.GetBiomeIdAtCoord(localCoord.tileCoord);
-    }
-
-    return biomeId;
-  }
-
-  public Coord[] GetSurroundingCoordOffsets() {
+  Coord[] GetSurroundingCoordOffsets() {
     return new Coord[] {
       new Coord(0, 1),
       new Coord(1, 1),
@@ -269,32 +159,38 @@ public class ChunksManager : MonoBehaviour
 
   // display other data maps
 
-  public void DisplayMap() {
-    OnDrawMap?.Invoke(mapToDraw);
+  public void UpdateDrawnMap() {
+    foreach(Chunk chunk in chunks.Values) {
+      chunk.DrawMap(worldBuilder.mapToDraw);
+    }
   }
 
   void CheckPlayerInput() {
     if(Input.GetKeyDown(KeyCode.M)) {
       NextMapToDraw();
-      DisplayMap();
+      UpdateDrawnMap();
     }
   }
 
   void NextMapToDraw() {
-    if(mapToDraw == MapToDraw.Humidity) {
-      mapToDraw = 0;
+    if(worldBuilder.mapToDraw == MapToDraw.Humidity) {
+      worldBuilder.mapToDraw = 0;
 
     } else {
-      mapToDraw++;
+      worldBuilder.mapToDraw++;
     }
   }
+  
+  public BiomeSetSO GetBiomeSet() {
+    return worldBuilder.BiomeSet;
+  }
 
-  // void OnDrawGizmos() {
-  //   Gizmos.color = Color.green;
-  //   foreach(Chunk chunk in chunks.Values) {
-  //     Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
-  //     Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
-  //     Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
-  //   }
-  // }
+  void OnDrawGizmos() {
+    Gizmos.color = Color.green;
+    foreach(Chunk chunk in chunks.Values) {
+      Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
+      Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
+      Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
+    }
+  }
 }

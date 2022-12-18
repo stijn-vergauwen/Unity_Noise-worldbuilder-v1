@@ -21,4 +21,11 @@ public class BiomeSetSO : ScriptableObject
     }
     return debugBiome;
   }
+
+  public BiomeSO FindBiome(string biomeName) {
+    foreach(BiomeSO biome in biomes) {
+      if(biome.biomeName == biomeName) return biome;
+    }
+    return debugBiome;
+  }
 }
