@@ -15,12 +15,22 @@ public class PageController : MonoBehaviour
 
   public void ShowSettings() {
     HideAll();
-    mainMenu.gameObject.SetActive(true);
+    settings.gameObject.SetActive(true);
   }
 
   public void ShowWorldPreview() {
     HideAll();
-    mainMenu.gameObject.SetActive(true);
+    worldPreview.gameObject.SetActive(true);
+  }
+
+  void Start() {
+    ShowMainMenu();
+  }
+
+  void Update() {
+    if(Input.GetKeyDown(KeyCode.Escape) && !mainMenu.gameObject.activeSelf) {
+      ShowMainMenu();
+    }
   }
 
   void HideAll() {
