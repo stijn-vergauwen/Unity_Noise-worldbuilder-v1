@@ -23,7 +23,7 @@ public class GameSettingsSO : ScriptableObject
     worldSettings = newSettings;
   }
 
-  public void SetOtherSettings(int transitionSmoothness, bool spawnVegetation, bool simulateWater) {
+  public void SetTerrainSettings(int transitionSmoothness, bool spawnVegetation, bool simulateWater) {
     this.biomeTransitionSmoothness = transitionSmoothness;
     this.spawnVegetation = spawnVegetation;
     this.simulateWater = simulateWater;

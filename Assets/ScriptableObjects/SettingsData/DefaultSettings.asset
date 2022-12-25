@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450d233ae1e7c1e499f0d134a9b25737, type: 3}
+  m_Name: DefaultSettings
+  m_EditorClassIdentifier: 
+  worldSettings:
+    tileSize: 1
+    chunkSize: 30
+    worldSize: 8
+    heightMap:
+      seed: 47
+      offset: {x: 0, y: 0}
+      scale: 240
+      octaves: 7
+      persistance: 0.38
+      lacunarity: 2.3
+    temperatureMap:
+      seed: 81
+      offset: {x: 0, y: 0}
+      scale: 510
+      octaves: 3
+      persistance: 0.4
+      lacunarity: 3.2
+    humidityMap:
+      seed: 33
+      offset: {x: 0, y: 0}
+      scale: 410
+      octaves: 3
+      persistance: 0.45
+      lacunarity: 2.6
+    biomeSet: {fileID: 11400000, guid: 0272f62450e94724b9c0cf43d0f7240d, type: 2}
+    heightMultiplier: 70
+    meshHeightCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.3557486
+        outSlope: 0.3557486
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.2240882
+      - serializedVersion: 3
+        time: 0.39050555
+        value: 0.125955
+        inSlope: 0.6559374
+        outSlope: 0.6559374
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.19093443
+        outWeight: 0.35641
+      - serializedVersion: 3
+        time: 0.646248
+        value: 0.30853558
+        inSlope: 1.5044917
+        outSlope: 1.5044917
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.24961859
+        outWeight: 0.18063165
+      - serializedVersion: 3
+        time: 1.0175242
+        value: 1.0093359
+        inSlope: 0.38668898
+        outSlope: 0.38668898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.24477537
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  biomeTransitionSmoothness: 2
+  spawnVegetation: 1
+  simulateWater: 1
+  terrainDistance: 400
+  VegetationDistance: 180
+  WaterDistance: 100
