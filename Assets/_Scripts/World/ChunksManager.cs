@@ -48,7 +48,7 @@ public class ChunksManager : MonoBehaviour
     return chunk;
   }
 
-  void ClearChunks() {
+  public void ClearChunks() {
     chunks.Clear();
   }
 
@@ -185,12 +185,12 @@ public class ChunksManager : MonoBehaviour
     return worldBuilder.BiomeSet;
   }
 
-  void OnDrawGizmos() {
-    Gizmos.color = Color.green;
-    foreach(Chunk chunk in chunks.Values) {
-      Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
-      Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
-      Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
-    }
-  }
+  // void OnDrawGizmos() {
+  //   Gizmos.color = Color.green;
+  //   foreach(Chunk chunk in chunks.Values) {
+  //     Vector3 chunkposition = worldBuilder.CoordToFlatPosition(worldBuilder.LocalToWorldCoord(chunk.chunkCoord, new Coord(0, 0)));
+  //     Vector3 halfChunkSize = new Vector3(.5f, 0, .5f) * worldBuilder.ChunkSize;
+  //     Gizmos.DrawSphere(chunkposition + halfChunkSize, 2);
+  //   }
+  // }
 }

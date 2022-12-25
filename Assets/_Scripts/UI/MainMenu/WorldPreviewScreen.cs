@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class WorldPreviewScreen : MonoBehaviour
 {
@@ -26,8 +27,12 @@ public class WorldPreviewScreen : MonoBehaviour
   private float timeOfLastChange;
   private bool changesMade;
 
+  public UnityEvent OnUpdatePreview;
+
   private void Start() {
     ResetToDefaultSettings();
+    RandomizeSeedValues();
+    UpdatePreview();
   }
 
   private void Update() {
@@ -38,7 +43,6 @@ public class WorldPreviewScreen : MonoBehaviour
 
   public void StartGame() {
     ApplyChanges();
-
     sceneChangeChannel.RaiseEvent(SceneName.Game);
   }
 
@@ -47,7 +51,7 @@ public class WorldPreviewScreen : MonoBehaviour
 
     print("Update preview");
 
-    // redraw preview
+    OnUpdatePreview?.Invoke();
   }
 
   private void ApplyChanges() {
@@ -93,95 +97,92 @@ public class WorldPreviewScreen : MonoBehaviour
     ui.waterDistance.SetValue(WaterDistance);
   }
 
-  // TODO: Update Elements after values updated
   // Value Updates
 
   public void UpdateHeightSeed(int newSeed) {
     worldSettings.heightMap.seed = newSeed;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.heightSeed.SetValue(newSeed);
   }
 
   public void UpdateTemperatureSeed(int newSeed) {
     worldSettings.temperatureMap.seed = newSeed;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.temperatureSeed.SetValue(newSeed);
   }
 
   public void UpdateHumiditySeed(int newSeed) {
     worldSettings.humidityMap.seed = newSeed;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.humiditySeed.SetValue(newSeed);
   }
 
   public void UpdateHeightScale(int newScale) {
     worldSettings.heightMap.scale = newScale;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.heightScale.SetValue(newScale);
   }
 
   public void UpdateTemperatureScale(int newScale) {
     worldSettings.temperatureMap.scale = newScale;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.temperatureScale.SetValue(newScale);
   }
 
   public void UpdateHumidityScale(int newScale) {
     worldSettings.humidityMap.scale = newScale;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.humidityScale.SetValue(newScale);
   }
 
   public void UpdateTransitionSmoothness(int value) {
-    int newSmoothness = Mathf.Clamp(value, 0, 5);
+    int newSmoothness = Mathf.Clamp(value, 0, 3);
     biomeTransitionSmoothness = newSmoothness;
-    OnChange();
-    // Update UI element
+    OnPreviewChangeMade();
+
     ui.transitionSmoothness.SetValue(value);
   }
 
   public void UpdateSpawnVegetation(bool value) {
     spawnVegetation = value;
-    OnChange();
-    // Update UI element
+
     ui.spawnVegetation.isOn = value;
   }
 
   public void UpdateSimulateWater(bool value) {
     simulateWater = value;
-    OnChange();
-    // Update UI element
+
     ui.simulateWater.isOn = value;
   }
 
   public void UpdateTerrainDistance(int distance) {
     terrainDistance = distance;
-    OnChange();
-    // Update UI element
+
+    UpdateVegetationDistance(VegetationDistance);
+    UpdateWaterDistance(WaterDistance);
+
     ui.terrainDistance.SetValue(distance);
   }
 
   public void UpdateVegetationDistance(int distance) {
-    VegetationDistance = distance;
-    OnChange();
-    // Update UI element
-    ui.vegetationDistance.SetValue(distance);
+    VegetationDistance = Mathf.Clamp(distance, 20, terrainDistance - 80);
+
+    ui.vegetationDistance.SetValue(VegetationDistance);
   }
 
   public void UpdateWaterDistance(int distance) {
-    WaterDistance = distance;
-    OnChange();
-    // Update UI element
-    ui.waterDistance.SetValue(distance);
+    WaterDistance = Mathf.Clamp(distance, 20, terrainDistance - 80);
+
+    ui.waterDistance.SetValue(WaterDistance);
   }
 
-  private void OnChange() {
+  private void OnPreviewChangeMade() {
     timeOfLastChange = Time.time;
     changesMade = true;
   }

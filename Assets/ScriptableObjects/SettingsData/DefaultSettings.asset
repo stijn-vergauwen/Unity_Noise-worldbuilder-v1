@@ -15,7 +15,7 @@ MonoBehaviour:
   worldSettings:
     tileSize: 1
     chunkSize: 30
-    worldSize: 8
+    worldSize: 5
     heightMap:
       seed: 47
       offset: {x: 0, y: 0}
