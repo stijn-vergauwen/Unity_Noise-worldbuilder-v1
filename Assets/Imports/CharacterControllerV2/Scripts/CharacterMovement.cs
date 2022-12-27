@@ -27,6 +27,8 @@ public class CharacterMovement : MonoBehaviour
   bool hasJumpInput;
   bool isSprinting;
 
+  bool canMove;
+
   // movement relative to floor
   Transform currentFloor;
   Vector3 currentFloorVel;
@@ -55,7 +57,13 @@ public class CharacterMovement : MonoBehaviour
     controller.gameObject.SetActive(false);
   }
 
+  public void ToggleMovement(bool disableMovement) {
+    canMove = !disableMovement;
+  }
+
   void Update() {
+    if(!canMove) return;
+    
     UpdateRotation();
   }
 
@@ -63,12 +71,14 @@ public class CharacterMovement : MonoBehaviour
     UpdateMovement();
 
     // jump if grounded and trying to jump
-    if(hasJumpInput) {
+    if(canMove && hasJumpInput) {
       hasJumpInput = false;
       if(controller.isGrounded) {
         controller.rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
       }
     }
+    
+    
 
     // isGrounded & floor check
     bool isGroundedCheck = Physics.CheckSphere(transform.position + Vector3.up * .4f, .45f, groundedMask);
@@ -99,7 +109,7 @@ public class CharacterMovement : MonoBehaviour
     Vector3 currentVel = controller.rb.velocity - currentFloorVel;
     float currentSpeed = currentVel.magnitude;
 
-    if(moveInputDir != Vector3.zero) {
+    if(canMove && moveInputDir != Vector3.zero) {
       if(isSprinting) {
         if(currentSpeed < sprintSpeed) {
           controller.rb.AddRelativeForce(moveInputDir * sprintStrength);

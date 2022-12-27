@@ -35,6 +35,8 @@ public class FlyingCam : MonoBehaviour
   float targetZoom;
   float zoomVelocity;
 
+  bool canMove;
+
   public void ActivatePerspective(Vector3 position, Quaternion rotation) {
     anchor.gameObject.SetActive(true);
     anchor.transform.SetPositionAndRotation(
@@ -50,8 +52,14 @@ public class FlyingCam : MonoBehaviour
     anchor.gameObject.SetActive(false);
   }
 
+  public void ToggleMovement(bool disableMovement) {
+    canMove = !disableMovement;
+  }
+
   void Update() {
-    UpdateCameraMovement();
+    if(canMove) {
+      UpdateCameraMovement();
+    }
   }
 
   void UpdateCameraMovement() {

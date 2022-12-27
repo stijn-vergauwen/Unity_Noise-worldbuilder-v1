@@ -26,4 +26,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c5cff0901e0318b47b2f84c089e7eecb, type: 2}
   - {fileID: 11400000, guid: edc6bb8e51c2a6e4bb22e9cf37ddfa3d, type: 2}
   - {fileID: 11400000, guid: 7e140f26172edc347a2501ef06bd53ba, type: 2}
-  debugBiome: {fileID: 11400000, guid: da731dcda48202d41af9055b19f190d0, type: 2}
+  debugBiome: {fileID: 11400000, guid: 3d8f03baf486c19458005f814cab1f3a, type: 2}

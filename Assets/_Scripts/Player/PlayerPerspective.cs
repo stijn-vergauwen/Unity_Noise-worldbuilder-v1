@@ -17,7 +17,7 @@ public class PlayerPerspective : MonoBehaviour
   [Header("Channels")]
   [SerializeField] ScreenFadeEventChannelSO screenFade;
 
-  Perspective currentPerspective;
+  public Perspective currentPerspective;
   bool isInPerspectiveTransition;
 
   Vector3 playerPosition;
