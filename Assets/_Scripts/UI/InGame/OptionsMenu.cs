@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class OptionsMenu : MonoBehaviour
 {
   [SerializeField] GameObject menu;
+
+  [Header("Channels")]
   [SerializeField] SceneChangeEventChannelSO sceneChange;
 
   bool menuIsActive = false;
+
+  public UnityEvent<bool> OnToggleMenu;
+  public UnityEvent<bool> OnTogglePositionWidget;
 
   void Start() {
     SetMenuActive(false);
@@ -31,6 +35,7 @@ public class OptionsMenu : MonoBehaviour
     menu.SetActive(value);
     menuIsActive = value;
     Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
+    OnToggleMenu?.Invoke(value);
   }
   
   public void ReturnToMainMenu() {

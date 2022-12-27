@@ -678,6 +678,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menu: {fileID: 1755943582}
   sceneChange: {fileID: 11400000, guid: 566d2eca35354774bb7cb27bb97ce72a, type: 2}
+  OnToggleMenu:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7652744329506047959}
+        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+        m_MethodName: ToggleMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7652744329506047958}
+        m_TargetAssemblyTypeName: FlyingCam, Assembly-CSharp
+        m_MethodName: ToggleMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTogglePositionWidget:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1523366254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,6 +1407,10 @@ PrefabInstance:
       propertyPath: randomizeNoiseSeeds
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4019767508905979489, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
+      propertyPath: useGameSettingsData
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxPropDistance
       value: 180
@@ -1480,5 +1514,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610d8efc6d55b5d469c99681a0748972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7652744329506047958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6751388113131362575, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+  m_PrefabInstance: {fileID: 7652744329506047956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ef731c05aa2b140bee5ed048900035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7652744329506047959 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5456976649808144948, guid: 85cd30fea3c3e9d4aba5eab660994b12, type: 3}
+  m_PrefabInstance: {fileID: 7652744329506047956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208c8945db874cd47a4fbb7b1fe5d7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
