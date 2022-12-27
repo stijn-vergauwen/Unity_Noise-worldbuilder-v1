@@ -31,8 +31,6 @@ public class WorldPreviewScreen : MonoBehaviour
 
   private void Start() {
     ResetToDefaultSettings();
-    RandomizeSeedValues();
-    UpdatePreview();
   }
 
   private void Update() {
@@ -67,7 +65,7 @@ public class WorldPreviewScreen : MonoBehaviour
     UpdateHumiditySeed(Random.Range(0, 1000));
   }
 
-  public void ResetToDefaultSettings() { // TODO: refresh preview when resetting to default
+  public void ResetToDefaultSettings() {
     worldSettings = defaultSettings.GetWorldSettings();
     biomeTransitionSmoothness = defaultSettings.biomeTransitionSmoothness;
     spawnVegetation = defaultSettings.spawnVegetation;
@@ -75,8 +73,8 @@ public class WorldPreviewScreen : MonoBehaviour
     terrainDistance = defaultSettings.terrainDistance;
     VegetationDistance = defaultSettings.VegetationDistance;
     WaterDistance = defaultSettings.WaterDistance;
-    ApplyChanges(); // remove this, and add OnPreviewChangeMade() (i think this works)
     UpdateAllUI();
+    RandomizeSeedValues();
   }
 
   private void UpdateAllUI() {
