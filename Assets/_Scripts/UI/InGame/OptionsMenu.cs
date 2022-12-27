@@ -32,7 +32,6 @@ public class OptionsMenu : MonoBehaviour
   }
 
   void SetMenuActive(bool value) {
-    // TODO: disable player looking around when menu is open
     menu.SetActive(value);
     menuIsActive = value;
     Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
