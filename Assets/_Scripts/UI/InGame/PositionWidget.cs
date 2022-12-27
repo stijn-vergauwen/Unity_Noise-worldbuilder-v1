@@ -18,6 +18,10 @@ public class PositionWidget : MonoBehaviour
     player.OnPositionUpdate -= UpdateWidget;
   }
 
+  public void ToggleWidget(bool value) {
+    gameObject.SetActive(value);
+  }
+
   void UpdateWidget(Vector3 newPosition) {
     xPositionText.SetText("X: " + newPosition.x.ToString("F2"));
     zPositionText.SetText("Z: " + newPosition.z.ToString("F2"));
