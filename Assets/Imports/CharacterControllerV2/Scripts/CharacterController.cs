@@ -22,6 +22,8 @@ public class CharacterController : MonoBehaviour
   IGrabbable grabbableTarget;
   Transform targetTransform;
 
+  public bool hasInteractableTarget => interactableTarget != null;
+
   void OnEnable() {
     input.OnInteract += OnInteract;
   }
@@ -38,7 +40,7 @@ public class CharacterController : MonoBehaviour
     // This whole interaction code can def be much simpler, this is my first attempt though so fine for now
 
     RaycastHit hitInfo;
-    if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 2)) {
+    if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 2.5f)) {
       if(hitInfo.transform != targetTransform) {
 
         // if interactable found
@@ -88,8 +90,8 @@ public class CharacterController : MonoBehaviour
     }
   }
 
-  // void OnDrawGizmos() {
-  //   Gizmos.color = Color.blue;
-  //   Gizmos.DrawRay(cam.transform.position, cam.transform.forward * 2);
-  // }
+  void OnDrawGizmos() {
+    Gizmos.color = Color.blue;
+    Gizmos.DrawRay(cam.transform.position, cam.transform.forward * 2);
+  }
 }

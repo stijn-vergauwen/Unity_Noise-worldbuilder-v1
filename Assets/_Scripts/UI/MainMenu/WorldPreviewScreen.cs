@@ -31,6 +31,7 @@ public class WorldPreviewScreen : MonoBehaviour
 
   private void Start() {
     ResetToDefaultSettings();
+    UpdatePreview();
   }
 
   private void Update() {

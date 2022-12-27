@@ -12,7 +12,6 @@ public class OptionsMenu : MonoBehaviour
   bool menuIsActive = false;
 
   public UnityEvent<bool> OnToggleMenu;
-  public UnityEvent<bool> OnTogglePositionWidget;
 
   void Start() {
     SetMenuActive(false);
