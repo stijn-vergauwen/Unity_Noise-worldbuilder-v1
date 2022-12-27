@@ -2206,11 +2206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxPropDistance
-      value: 180
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: maxRenderDistance
-      value: 400
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8618939874773762861, guid: 8de5e945418abb64e981b9dc8e10a8d7, type: 3}
       propertyPath: playerPerspective
