@@ -7,6 +7,7 @@ public class WaterLayer : MonoBehaviour
   [SerializeField] WorldBuilder worldBuilder;
   [SerializeField] ChunksManager chunksManager;
   [SerializeField] MeshFilter waterLayerPrefab;
+  [SerializeField] GameSettingsSO gameSettingsData;
 
   [Header("Settings")]
   [SerializeField] bool simulateWater;
@@ -18,6 +19,17 @@ public class WaterLayer : MonoBehaviour
 
   float xOffset;
   float yOffset;
+
+  private void Start() {
+    if(worldBuilder.useGameSettingsData) {
+      GetGameSettingsData();
+    }
+  }
+
+  void GetGameSettingsData() {
+    simulateWater = gameSettingsData.simulateWater;
+  }
+
 
   public bool CheckIfWaterInChunk(int[,] biomeMap) {
     int mapSize = biomeMap.GetLength(0);

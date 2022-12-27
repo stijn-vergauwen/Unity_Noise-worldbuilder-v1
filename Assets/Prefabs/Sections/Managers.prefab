@@ -98,8 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldBuilder: {fileID: 4019767508905979489}
-  chunksManager: {fileID: 0}
+  chunksManager: {fileID: 4019767508876905273}
   waterLayerPrefab: {fileID: 2347802040355484908, guid: 361a60131e4e2ad4b864a1b185dd5a33, type: 3}
+  gameSettingsData: {fileID: 11400000, guid: 60dc720605e663d4291b859e7e926faa, type: 2}
   simulateWater: 1
   waterLodLevel: 2
   seaLevel: 9.1
@@ -184,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunksManager: {fileID: 4019767508876905273}
   worldBuilder: {fileID: 4019767508905979489}
+  gameSettingsData: {fileID: 11400000, guid: 60dc720605e663d4291b859e7e926faa, type: 2}
   playerPerspective: {fileID: 0}
   playerMoveThreshold: 10
   maxRenderDistance: 0
@@ -236,6 +238,7 @@ MonoBehaviour:
   chunksManager: {fileID: 4019767508876905273}
   chunkPrefab: {fileID: 2448587648441038581, guid: 1a3778ba82b75884f829eb3219f9d15e, type: 3}
   chunkHolder: {fileID: 0}
+  gameSettingsData: {fileID: 11400000, guid: 60dc720605e663d4291b859e7e926faa, type: 2}
   worldSettings:
     tileSize: 1
     chunkSize: 30
@@ -309,5 +312,6 @@ MonoBehaviour:
   biomeTransitionSmoothness: 2
   spawnVegetation: 1
   endlessTerrain: 1
+  mapPreviewMode: 0
   mapToDraw: 0
   buildMode: 1

@@ -6,6 +6,7 @@ public class TerrainUpdator : MonoBehaviour
 {
   [SerializeField] ChunksManager chunksManager;
   [SerializeField] WorldBuilder worldBuilder;
+  [SerializeField] GameSettingsSO gameSettingsData;
 
   [Header("Player movement based chunk updating")]
   [SerializeField] PlayerPerspective playerPerspective;
@@ -47,6 +48,10 @@ public class TerrainUpdator : MonoBehaviour
   // Chunk updating
 
   public void StartUpdator() {
+    if(worldBuilder.useGameSettingsData) {
+      GetGameSettingsData();
+    }
+
     chunkSearchRadius = worldBuilder.PositionToLocalCoord(
       Vector3.right * maxRenderDistance
     ).chunkCoord.x;
@@ -163,6 +168,13 @@ public class TerrainUpdator : MonoBehaviour
   float GetDistanceToPlayer(Vector3 point) {
     return Vector3.Distance(point, playerPerspective.GetPlayerPosition());
   }
+
+  void GetGameSettingsData() {
+    maxRenderDistance = gameSettingsData.terrainDistance;
+    maxPropDistance = gameSettingsData.VegetationDistance;
+    maxWaterSimulatingDistance = gameSettingsData.WaterDistance;
+  }
+
 
   class ChunkActivity {
     public bool prevActive;

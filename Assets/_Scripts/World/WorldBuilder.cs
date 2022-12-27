@@ -9,6 +9,7 @@ public class WorldBuilder : MonoBehaviour
   [SerializeField] ChunksManager chunksManager;
   [SerializeField] Chunk chunkPrefab;
   [SerializeField] Transform chunkHolder;
+  [SerializeField] GameSettingsSO gameSettingsData;
 
   [Header("Settings")]
   [SerializeField] WorldSettings worldSettings;
@@ -19,6 +20,8 @@ public class WorldBuilder : MonoBehaviour
 
   public bool spawnVegetation;
   public bool endlessTerrain;
+  public bool mapPreviewMode;
+  public bool useGameSettingsData;
 
   public MapToDraw mapToDraw;
   [SerializeField] BuildMode buildMode;
@@ -40,6 +43,14 @@ public class WorldBuilder : MonoBehaviour
   }
 
   void Start() {
+    if(mapPreviewMode) {
+      return;
+    }
+
+    if(useGameSettingsData) {
+      GetGameSettingsData();
+    }
+
     if(endlessTerrain) {
       chunksManager.StartUpdator();
 
@@ -54,6 +65,19 @@ public class WorldBuilder : MonoBehaviour
     worldSettings.heightMap.seed = Random.Range(1, 1000);
     worldSettings.temperatureMap.seed = Random.Range(1, 1000);
     worldSettings.humidityMap.seed = Random.Range(1, 1000);
+  }
+
+  public void RefreshPreview() {
+    ClearChunks();
+    GetGameSettingsData();
+    spawnVegetation = false;
+    GenerateWorld();
+  }
+
+  void GetGameSettingsData() {
+    worldSettings = gameSettingsData.GetWorldSettings();
+    biomeTransitionSmoothness = gameSettingsData.biomeTransitionSmoothness;
+    spawnVegetation = gameSettingsData.spawnVegetation;
   }
 
   void GenerateWorld() {
@@ -73,6 +97,7 @@ public class WorldBuilder : MonoBehaviour
 
     foreach(Chunk chunk in chunks) {
       if(IsAtWorldEdge(chunk.chunkCoord)) continue;
+
       chunksManager.ActivateChunk(chunk);
 
       if(spawnVegetation) {
@@ -88,7 +113,7 @@ public class WorldBuilder : MonoBehaviour
 
   public Chunk SetupNewChunk(Coord chunkCoord) {
     Vector2 chunkOffset = ChunkCoordToOffset(chunkCoord);
-    Vector3 chunkPosition = new Vector3(chunkOffset.x, 0, chunkOffset.y) * Tilesize;
+    Vector3 chunkPosition = transform.position + new Vector3(chunkOffset.x, 0, chunkOffset.y) * Tilesize;
 
     Chunk newChunk = CreateChunk(chunkCoord, chunkOffset, chunkPosition);
 
@@ -116,6 +141,14 @@ public class WorldBuilder : MonoBehaviour
     );
 
     return newChunk;
+  }
+
+  void ClearChunks() {
+    chunksManager.ClearActiveChunks();
+    chunksManager.ClearChunks();
+    foreach(Transform chunkTransform in chunkHolder.transform) {
+      Destroy(chunkTransform.gameObject);
+    }
   }
 
   // Position & Coord utility
